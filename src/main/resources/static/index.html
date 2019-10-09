@@ -13,6 +13,7 @@
         naar updates vanaf de server over de websocket communicatie.
     -->
     <script>
+
         function parseCommand(input = "") {
             return JSON.parse(input);
         }
@@ -20,6 +21,7 @@
         var socket;
 
         window.onload = function () {
+
             var camera, scene, renderer;
             var cameraControls;
 
@@ -40,14 +42,6 @@
                 document.body.appendChild(renderer.domElement);
 
                 window.addEventListener('resize', onWindowResize, false);
-
-                var geometry = new THREE.PlaneGeometry(30, 30, 32);
-                var material = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
-                var plane = new THREE.Mesh(geometry, material);
-                plane.rotation.x = Math.PI / 2.0;
-                plane.position.x = 15;
-                plane.position.z = 15;
-                scene.add(plane);
 
                 var light = new THREE.AmbientLight(0x404040);
                 light.intensity = 4;
@@ -72,6 +66,7 @@
              * functie geregistreerd waarmee binnenkomende berichten worden afgehandeld.
              */
             socket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connectToSimulation");
+            var loader = new THREE.ObjectLoader();
             socket.onmessage = function (event) {
                 //Hier wordt het commando dat vanuit de server wordt gegeven uit elkaar gehaald
                 var command = parseCommand(event.data);
@@ -101,9 +96,6 @@
 
                             scene.add(group);
                             worldObjects[command.parameters.uuid] = group;
-                        }
-                        if (command.parameters.type == "wareHouse") {
-                            
                         }
                     }
 
