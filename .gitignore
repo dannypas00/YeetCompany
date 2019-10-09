@@ -146,3 +146,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,windows,java-web,intellij
+
+ .idea/compiler.xml
+ .idea/encodings.xml
+ .idea/misc.xml
+ .idea/modules.xml
+ .idea/vcs.xml
+ AmazonSimulatie.iml
+
