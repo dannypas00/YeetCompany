@@ -1,0 +1,17 @@
+{
+	"orders": {
+		"input": {
+			"dirt",
+			"glowstone",
+			"tnt",
+			"log",
+			"pig"
+		},
+		"output": {
+			"iron",
+			"planks",
+			"cobblestone",
+			"bricks"
+		}
+	}
+}
