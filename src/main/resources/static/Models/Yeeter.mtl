@@ -1,28 +1,24 @@
-Wavefront OBJ material file
-# Contains 2 materials
-
-newmtl Mob_Head
-# Ns 0
-# Ka 0.2 0.2 0.2
-Kd 1 1 1
-Ks 0 0 0
-# map_Ka Yeeter-RGB.png
-# for G3D, to make textures look blocky:
-interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
-map_Kd Yeeter-RGB.png
-# illum 2
-# d 1
-# Tr 0
+# Blender MTL File: 'None'
+# Material Count: 2
 
 newmtl Grindstone
-# Ns 0
-# Ka 0.2 0.2 0.2
-Kd 1 1 1
-Ks 0 0 0
-# map_Ka Yeeter-RGB.png
-# for G3D, to make textures look blocky:
-interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 1
 map_Kd Yeeter-RGB.png
-# illum 2
-# d 1
-# Tr 0
+
+newmtl Mob_Head
+Ns 0.000000
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 1
+map_Kd Yeeter-RGB.png
