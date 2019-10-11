@@ -18,6 +18,12 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
+    private double targetx = 32;
+    private double targetz = 16;
+    private double startx;
+    private double startz;
+
+
     public Robot() {
         this.uuid = UUID.randomUUID();
     }
@@ -37,13 +43,31 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if(x < 15) {
-            this.x += 0.5;
-        } else {
-            this.z += 0.5;
-        }
-        
+        RotateTo(targetx, targetz);
+        MoveTo(targetx, targetz);
+
         return true;
+    }
+
+    public void RotateTo(double targetx, double targetz) {
+        double diffx = targetx - x;
+        double diffz = targetz - z;
+        double theta = Math.atan(diffz/diffx);
+        theta *= 1/Math.PI;
+        theta += 0.25;
+        System.out.println("theta is: " + theta);
+        if(rotationY < theta + 0.25){
+            this.rotationY += 0.01;
+        }
+    }
+
+    public void MoveTo(double targetx, double targetz){
+        if(x < targetx){
+            this.x += 0.1;
+        }
+        if(z < targetz){
+            this.z += 0.1;
+        }
     }
 
     @Override
