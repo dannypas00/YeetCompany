@@ -18,10 +18,10 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private double targetx = 32;
-    private double targetz = 16;
+    private double targetx = 14;
+    private double targetz = 14;
     private double startx;
-    private double startz;
+    private double starty;
 
 
     public Robot() {
@@ -44,6 +44,7 @@ class Robot implements Object3D, Updatable {
     @Override
     public boolean update() {
         RotateTo(targetx, targetz);
+
         MoveTo(targetx, targetz);
 
         return true;
@@ -53,11 +54,11 @@ class Robot implements Object3D, Updatable {
         double diffx = targetx - x;
         double diffz = targetz - z;
         double theta = Math.atan(diffz/diffx);
-        theta *= 1/Math.PI;
-        theta += 0.25;
+        theta *= 180/Math.PI/360 + 0.125;
         System.out.println("theta is: " + theta);
-        if(rotationY < theta + 0.25){
-            this.rotationY += 0.01;
+        System.out.println(getRotationY());
+        if(rotationY < theta ){
+            this.rotationY += 0.005;
         }
     }
 
