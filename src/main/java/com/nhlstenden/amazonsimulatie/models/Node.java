@@ -1,11 +1,20 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 public class Node {
-    public String data;
-    public Node left, right;
+    private int objectsStored;
+    private Boolean passable;
+    private int x;
+    private int z;
 
-    public Node(String item) {
-        data = item;
-        left = right = null;
+    public Node(int x, int z, Boolean passable, int objectsStored){
+        this.x = x;
+        this.z = z;
+        this.passable = passable;
+        this.objectsStored = objectsStored;
+    }
+
+    public Boolean getPassable()
+    {
+        return passable;
     }
 }

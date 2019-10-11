@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /*
@@ -23,9 +24,14 @@ class Robot implements Object3D, Updatable {
     private double startx;
     private double startz;
 
+    private ArrayList<Node> path;
+    private Pathfinding pathfinding;
+
 
     public Robot() {
         this.uuid = UUID.randomUUID();
+        pathfinding = new Pathfinding();
+        path = new ArrayList<Node>();
     }
 
     /*
@@ -43,8 +49,8 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        RotateTo(targetx, targetz);
-        MoveTo(targetx, targetz);
+        //RotateTo(targetx, targetz);
+        //MoveTo(targetx, targetz);
 
         return true;
     }

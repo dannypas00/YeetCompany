@@ -34,6 +34,7 @@ public class World implements Model {
     public World() {
         this.worldObjects = new ArrayList<>();
         this.worldObjects.add(new Robot());
+        Pathfinding pathfinding = new Pathfinding();
     }
 
     /*

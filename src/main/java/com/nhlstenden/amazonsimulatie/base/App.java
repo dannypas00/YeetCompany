@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.nhlstenden.amazonsimulatie.controllers.Controller;
 import com.nhlstenden.amazonsimulatie.controllers.SimulationController;
+import com.nhlstenden.amazonsimulatie.models.Pathfinding;
 import com.nhlstenden.amazonsimulatie.models.World;
 import com.nhlstenden.amazonsimulatie.views.DefaultWebSocketView;
 
