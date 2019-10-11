@@ -116,9 +116,33 @@
                         var material = new THREE.MeshFaceMaterial(cubeMaterials);
                         var robot = new THREE.Mesh(geometry, material);
                         robot.position.y = 0.15;
+                        robot.position.x = 0;
+                        robot.position.z = 14;
 
                         var group = new THREE.Group();
                         group.add(robot);
+
+                        scene.add(group);
+                        worldObjects[command.parameters.uuid] = group;
+                    }
+                    if (command.parameters.type == "minecart") {
+                        var geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
+                        var cubeMaterials = [
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //LEFT
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //RIGHT
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecarttop.png"), side: THREE.DoubleSide }), //TOP
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartbottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //FRONT
+                            new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //BACK
+                        ];
+                        var material = new THREE.MeshFaceMaterial(cubeMaterials);
+                        var minecart = new THREE.Mesh(geometry, material);
+                        minecart.position.y = 0.4;
+                        minecart.position.x = 20;
+                        minecart.position.z = 15.5;
+
+                        var group = new THREE.Group();
+                        group.add(minecart);
 
                         scene.add(group);
                         worldObjects[command.parameters.uuid] = group;

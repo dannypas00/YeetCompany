@@ -1,13 +1,13 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.UUID;
+import java.util.*;
 
 /*
- * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
+ * Deze class stelt een Minecart voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
- * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
+ * een Minecart geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Robot implements Object3D, Updatable {
+class Minecart implements Object3D, Updatable {
     private UUID uuid;
 
     private double x = 0;
@@ -18,25 +18,30 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    private double targetx = 0;
+    private double targetx = -20;
     private double targetz = 0;
     private double startx;
     private double startz;
 
     private double speed = 0.1;
 
+    public Stack<String> orders;
 
-    public Robot() {
+    public Minecart() {
         this.uuid = UUID.randomUUID();
+        orders = new Stack<String>();
+        orders.add("A0");
+        orders.add("B0");
+        orders.add("C0");
 
     }
 
     /*
      * Deze update methode wordt door de World aangeroepen wanneer de
      * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
-     * robot, in de 3D wereld steeds een beetje tijd krijgt om een update
+     * Minecart, in de 3D wereld steeds een beetje tijd krijgt om een update
      * uit te voeren. In de updatemethode hieronder schrijf je dus de code
-     * die de robot steeds uitvoert (bijvoorbeeld positieveranderingen). Wanneer
+     * die de Minecart steeds uitvoert (bijvoorbeeld positieveranderingen). Wanneer
      * de methode true teruggeeft (zoals in het voorbeeld), betekent dit dat
      * er inderdaad iets veranderd is en dat deze nieuwe informatie naar de views
      * moet worden gestuurd. Wordt false teruggegeven, dan betekent dit dat er niks
@@ -46,21 +51,9 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        RotateTo(targetx, targetz);
         MoveTo(targetx, targetz, speed);
 
         return true;
-    }
-
-    public void RotateTo(double targetx, double targetz) {
-        double diffx = targetx - x;
-        double diffz = targetz - z;
-        double theta = Math.atan(diffz/diffx);
-        theta *= 1/Math.PI;
-        theta += 0.25;
-        if(rotationY < theta + 0.25){
-            this.rotationY += 0.01;
-        }
     }
 
     public void MoveTo(double targetx, double targetz, double speed){
@@ -102,7 +95,7 @@ class Robot implements Object3D, Updatable {
          * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
          * javascript code wordt dit dan weer verder afgehandeld.
          */
-        return Robot.class.getSimpleName().toLowerCase();
+        return Minecart.class.getSimpleName().toLowerCase();
     }
 
     @Override
