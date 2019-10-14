@@ -1,6 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.UUID;
+import java.util.*;
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
@@ -10,22 +10,47 @@ import java.util.UUID;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+    private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = 0.1;
 
-    private double rotationX = 0;
-    private double rotationY = 0;
-    private double rotationZ = 0;
+    private Node target, root, A0, A1, A2;
 
-    private double targetx = 14;
-    private double targetz = 14;
-    private double startx;
-    private double starty;
+    private Stack<Node> nodeStack;
 
+    private Lerp lerp;
+
+    HashMap<String, Double> temp;
 
     public Robot() {
         this.uuid = UUID.randomUUID();
+
+        lerp = new Lerp();
+
+        root= new Node(" startingNode");
+        root.setX((int)Math.round(x));
+        root.setZ((int)Math.round(z));
+
+        A0 = new Node(" A0");
+        A0.setX(0);
+        A0.setZ(15);
+
+        A1 = new Node(" A1");
+        A1.setX(15);
+        A1.setZ(15);
+
+        A2 = new Node(" A2");
+        A2.setX(15);
+        A2.setZ(0);
+
+        nodeStack = new Stack<Node>();
+        nodeStack.push(A2);
+        nodeStack.push(A1);
+        nodeStack.push(A1);
+        nodeStack.push(A0);
+
+        target = nodeStack.pop();
+
+
+
     }
 
     /*
@@ -43,31 +68,60 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        RotateTo(targetx, targetz);
-
-        MoveTo(targetx, targetz);
-
+        //RotateTo(target);
+        System.out.println("x: " + x + " z: " + z);
+        MoveTo(target);
         return true;
     }
 
-    public void RotateTo(double targetx, double targetz) {
-        double diffx = targetx - x;
-        double diffz = targetz - z;
-        double theta = Math.atan(diffz/diffx);
-        theta *= 180/Math.PI/360 + 0.125;
-        System.out.println("theta is: " + theta);
-        System.out.println(getRotationY());
-        if(rotationY < theta ){
-            this.rotationY += 0.005;
-        }
+    /*Function to rotate the robot towards the target*/
+    public void RotateTo(Node targetNode) {
+         double deltaX = targetNode.getX()-x;
+         double deltaZ = targetNode.getZ()-z;
+         double rad = Math.atan(deltaZ/deltaX);
+         if(rotationY < rad){
+             rotationY += rotationSpeed;
+         }
+         if(rotationY > rad){
+            rotationY -= rotationSpeed;
+         }
     }
 
-    public void MoveTo(double targetx, double targetz){
-        if(x < targetx){
-            this.x += 0.1;
+    /*Function to move towards the target*/
+    public void MoveTo(Node targetNode){
+        if (targetNode.getX() - x < 0) {
+            if (targetNode.getX() < x) {
+                x -= linearSpeed;
+            }
+        } else {
+            if (targetNode.getX() > x) {
+                x += linearSpeed;
+            }
         }
-        if(z < targetz){
-            this.z += 0.1;
+        if (targetNode.getZ() - z < 0) {
+            if (targetNode.getZ() < z) {
+                z -= linearSpeed;
+            }
+        } else {
+            if (targetNode.getZ() > z) {
+                z += linearSpeed;
+            }
+        }
+
+        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed){
+            x = targetNode.getX();
+        }
+
+        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed){
+            z = targetNode.getZ();
+        }
+
+        if((x == targetNode.getX() && z == targetNode.getZ()))
+        {
+            if(!nodeStack.isEmpty()){
+                target = nodeStack.pop();
+                //System.out.println("POPPED STACK, new target: " + target.getX() + ", " + target.getZ());
+            }
         }
     }
 
