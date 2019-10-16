@@ -26,23 +26,35 @@ public class Pathfinding implements Model {
                         if (i != 1)
                             addDestinationLeft(j, i);
                         break;
+                    case 2:
+                    case 4:
+                        if (i != 1) {
+                            addDestinationLeft(j, i);
+                            addDestinationAbove(j, i);
+                        }
+                        break;
                     case 6:
                         if (i != 1) {
                             addDestinationLeft(j, i);
                             addDestinationAbove(j, i);
                         }
+                        break;
                     default:
                         addDestinationAbove(j, i);
+                        break;
                 }
                 n.setX(15 + (15 * j));
                 n.setZ(15 * i);
             }
         }
 
-        for (int i = 0; i < 3; i++) {
-            nodes[i][0] = new Node(i + ", 0");
-            nodes[i][0].addDestination(nodes[i*3][1], 15);
-        }
+        nodes[0][0] = new Node("0, 0");
+        nodes[0][0].addDestination(nodes[0][1], 15);
+        nodes[3][0] = new Node("3, 0");
+        nodes[3][0].addDestination(nodes[3][1], 15);
+        nodes[3][0].setDistance(0);
+        nodes[6][0] = new Node("6, 0");
+        nodes[6][0].addDestination(nodes[6][1], 15);
 
         for (int i = 2; i < 4; i++){
             addDestinationAbove(i, 2);
@@ -61,11 +73,14 @@ public class Pathfinding implements Model {
         }
 
         for (int i = 0; i < items.length; i++) {
-            itemMap.put(items[i], nodes[(int) Math.ceil(Math.random()*4)][i]);
+            int rand = i; //(int) Math.ceil(Math.random()*4);
+            Node location = nodes[rand][i];
+            System.out.println("Putting item " + items[i] + " down at location " + location.getName());
+            itemMap.put(items[i], location);
         }
 
         System.out.print("Path to dirt ");
-        for (Node n : getPathToItem("dirt")) {
+        for (Node n : getPathToItem("tnt")) {
             System.out.print("-> | " + n.getName() + " | ");
         }
         System.out.print("\r\n");
@@ -79,16 +94,16 @@ public class Pathfinding implements Model {
         nodes[row][col].addDestination(nodes[row - 1][col], 15);
     }
 
-    public Stack<Node> getPath(Node node) {
-        Dijkstra.calculateShortestPathFromSource(node);
-        Stack<Node> path = node.getShortestPath();
+    public List<Node> getPath(Node node) {
+        Dijkstra.calculateShortestPathFromSource(nodes[3][0]);
+        List<Node> path = node.getShortestPath();
         return path;
     }
 
-    public Stack<Node> getPathToItem(String item) {
-        System.out.println("Itemmap: " + itemMap.toString());
+    public List<Node> getPathToItem(String item) {
+        System.out.println("\r\nItemmap: " + itemMap.toString());
         Node target = nodes[4][4]; //itemMap.get(item);
-        //System.out.println("Map for item " + item + ": " + target.getName());
+        System.out.println("Map for item " + item + ": " + target.getName());
         return getPath(target);
     }
 
