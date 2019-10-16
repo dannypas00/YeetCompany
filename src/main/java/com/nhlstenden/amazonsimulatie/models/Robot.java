@@ -10,47 +10,67 @@ import java.util.*;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = 0.1;
+    private double x = 4, y, z = 4, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    private boolean rotating = true, moving = true;
 
-    private Node target, root, A0, A1, A2;
+    private Node target, root, A0, A1, A2, A3, A4, A5, A6;
 
     private Stack<Node> nodeStack;
 
-    private Lerp lerp;
-
-    HashMap<String, Double> temp;
-
     public Robot() {
         this.uuid = UUID.randomUUID();
-
-        lerp = new Lerp();
 
         root= new Node(" startingNode");
         root.setX((int)Math.round(x));
         root.setZ((int)Math.round(z));
 
         A0 = new Node(" A0");
-        A0.setX(0);
-        A0.setZ(15);
+        A0.setX(-4);
+        A0.setZ(4);
 
         A1 = new Node(" A1");
-        A1.setX(15);
-        A1.setZ(15);
+        A1.setX(-4);
+        A1.setZ(-4);
 
         A2 = new Node(" A2");
-        A2.setX(15);
-        A2.setZ(0);
+        A2.setX(4);
+        A2.setZ(-4);
+
+        A3 = new Node(" A3");
+        A3.setX(4);
+        A3.setZ(4);
+
+        A4 = new Node(" A4");
+        A4.setX(-4);
+        A4.setZ(4);
+
+        A5 = new Node(" A5");
+        A5.setX(-4);
+        A5.setZ(-4);
+
+        A6 = new Node(" A6");
+        A6.setX(4);
+        A6.setZ(-4);
 
         nodeStack = new Stack<Node>();
+        nodeStack.push(A6);
+        nodeStack.push(A5);
+        nodeStack.push(A4);
+        nodeStack.push(A3);
         nodeStack.push(A2);
-        nodeStack.push(A1);
         nodeStack.push(A1);
         nodeStack.push(A0);
 
+        nodeStack.push(A0);
+        nodeStack.push(A1);
+        nodeStack.push(A2);
+        nodeStack.push(A3);
+        nodeStack.push(A4);
+        nodeStack.push(A5);
+        nodeStack.push(A6);
+
+
         target = nodeStack.pop();
-
-
-
     }
 
     /*
@@ -68,27 +88,29 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        //RotateTo(target);
-        System.out.println("x: " + x + " z: " + z);
+        //System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
         MoveTo(target);
+        RotateTo(target);
+
+
+
+
         return true;
     }
 
     /*Function to rotate the robot towards the target*/
     public void RotateTo(Node targetNode) {
-         double deltaX = targetNode.getX()-x;
-         double deltaZ = targetNode.getZ()-z;
-         double rad = Math.atan(deltaZ/deltaX);
-         if(rotationY < rad){
-             rotationY += rotationSpeed;
-         }
-         if(rotationY > rad){
-            rotationY -= rotationSpeed;
-         }
+        deltaX = x - targetNode.getX();
+        deltaZ = z - targetNode.getZ();
+        rad = Math.atan2(deltaZ, deltaX);
+        if(rad < 0){
+            rad += 2*Math.PI;
+        }
+        rotationY = rad + 0.5*Math.PI;
     }
 
     /*Function to move towards the target*/
-    public void MoveTo(Node targetNode){
+    public void MoveTo(Node targetNode) {
         if (targetNode.getX() - x < 0) {
             if (targetNode.getX() < x) {
                 x -= linearSpeed;
@@ -108,19 +130,18 @@ class Robot implements Object3D, Updatable {
             }
         }
 
-        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed){
+        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed) {
             x = targetNode.getX();
         }
 
-        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed){
+
+        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed) {
             z = targetNode.getZ();
         }
 
-        if((x == targetNode.getX() && z == targetNode.getZ()))
-        {
-            if(!nodeStack.isEmpty()){
+        if ((x == targetNode.getX() && z == targetNode.getZ())) {
+            if (!nodeStack.isEmpty()) {
                 target = nodeStack.pop();
-                //System.out.println("POPPED STACK, new target: " + target.getX() + ", " + target.getZ());
             }
         }
     }
