@@ -41,16 +41,23 @@
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight + 5);
+            renderer.shadowMap.enabled = true;
             document.body.appendChild(renderer.domElement);
 
             window.addEventListener('resize', onWindowResize, false);
 
-            importModel("World", 1, 0, -3);
-            importModel("Yeeter");
+            importModel("World", 500, 0, -5);
+            //importModel("Yeeter", 1, 0, 2);
 
-            let light = new THREE.AmbientLight(0x404040);
+            let light = new THREE.DirectionalLight(0x404040, 1);
+            light.position.x = 10;
+            light.position.y = 30;
+            light.position.z = 10;
             light.intensity = 4;
+            let ambLight = new THREE.AmbientLight(0x404040);
+            ambLight.intensity = 0.75;
             scene.add(light);
+            scene.add(ambLight);
 
             const skyboxLoader = new THREE.CubeTextureLoader();
             const skybox = skyboxLoader.load([

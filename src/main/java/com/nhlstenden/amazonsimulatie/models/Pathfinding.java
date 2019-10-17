@@ -5,17 +5,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
 public class Pathfinding implements Model {
-    Graph graph;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private Graph graph = new Graph();
     private String[] items = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
     private HashMap<String, Node> itemMap = new HashMap<>();
-    Node[][] nodes = new Node[7][5];
+    private Node[][] nodes = new Node[7][5];
+
     public Pathfinding() {
+        setupGrid();
+    }
+
+    private void setupGrid() {
         for (int i = 1; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 nodes[j][i] = new Node(j + ", " + i);
@@ -62,7 +69,7 @@ public class Pathfinding implements Model {
         }
 
         //Add nodes to graph
-        Graph graph = new Graph();
+        graph = new Graph();
 
         for (Node[] a : nodes) {
             for (Node n : a) {
@@ -94,28 +101,27 @@ public class Pathfinding implements Model {
         nodes[row][col].addDestination(nodes[row - 1][col], 15);
     }
 
-    public List<Node> getPath(Node node) {
-        Dijkstra.calculateShortestPathFromSource(nodes[3][0]);
-        List<Node> path = node.getShortestPath();
+    private Stack<Node> getPath(Node node) {
+        Dijkstra.calculateShortestPathFromSource(node);
+        Stack<Node> path = node.getShortestPath();
         return path;
     }
 
-    public List<Node> getPathToItem(String item) {
-        System.out.println("\r\nItemmap: " + itemMap.toString());
-        Node target = nodes[4][4]; //itemMap.get(item);
-        System.out.println("Map for item " + item + ": " + target.getName());
+    public Stack<Node> getPathToItem(String item) {
+        System.out.println("Itemmap: " + itemMap.toString());
+        Node target = itemMap.get(item);
+        //System.out.println("Map for item " + item + ": " + target.getName());
         return getPath(target);
     }
 
     @Override
     public void update() {
-        // Enqueue new set of movements for robot
 
     }
 
     @Override
     public void addObserver(PropertyChangeListener pcl) {
-
+        pcs.addPropertyChangeListener(pcl);
     }
 
     @Override

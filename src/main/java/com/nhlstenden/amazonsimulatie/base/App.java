@@ -2,11 +2,7 @@ package com.nhlstenden.amazonsimulatie.base;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nhlstenden.amazonsimulatie.controllers.Controller;
-import com.nhlstenden.amazonsimulatie.controllers.OrderController;
 import com.nhlstenden.amazonsimulatie.controllers.SimulationController;
 import com.nhlstenden.amazonsimulatie.models.Pathfinding;
 import com.nhlstenden.amazonsimulatie.models.World;
@@ -59,7 +55,6 @@ public class App extends SpringBootServletInitializer implements WebSocketConfig
     public App() {
         this.controller = new SimulationController(new World());
         this.controller.start();
-        this.controller = new OrderController(new Pathfinding());
     }
 
     /*
@@ -99,8 +94,8 @@ public class App extends SpringBootServletInitializer implements WebSocketConfig
          * kunnen sturen.
          */
         @Override
-        public void afterConnectionEstablished(WebSocketSession sesion) {
-            controller.addView(new DefaultWebSocketView(sesion));
+        public void afterConnectionEstablished(WebSocketSession session) {
+            controller.addView(new DefaultWebSocketView(session));
         }
 
         /*
