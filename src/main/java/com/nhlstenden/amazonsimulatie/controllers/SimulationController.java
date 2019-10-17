@@ -5,6 +5,7 @@ import java.beans.PropertyChangeEvent;
 import com.nhlstenden.amazonsimulatie.base.Command;
 import com.nhlstenden.amazonsimulatie.models.Model;
 import com.nhlstenden.amazonsimulatie.models.Object3D;
+import com.nhlstenden.amazonsimulatie.models.OrderHandler;
 import com.nhlstenden.amazonsimulatie.views.View;
 
 /*
@@ -13,6 +14,8 @@ import com.nhlstenden.amazonsimulatie.views.View;
  * functionaliteit mee voor het managen van views en een model.
  */
 public class SimulationController extends Controller {
+
+    private OrderHandler orderHandler = new OrderHandler();
 
     public SimulationController(Model model) {
         super(model); //Met dit onderdeel roep je de constructor aan van de superclass (Controller)
@@ -30,7 +33,7 @@ public class SimulationController extends Controller {
     public void run() {
         while (true) {
             this.getModel().update();
-
+            orderHandler.update();
             try {
                 Thread.sleep(40);
             } catch (InterruptedException e) {
@@ -83,5 +86,4 @@ public class SimulationController extends Controller {
             }
         }
     }
-
 }

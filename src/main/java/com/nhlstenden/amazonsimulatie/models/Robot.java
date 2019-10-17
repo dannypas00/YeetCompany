@@ -1,6 +1,7 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.*;
+import java.util.Stack;
+import java.util.UUID;
 
 /*
  * Deze class stelt een robot voor. Hij impelementeerd de class Object3D, omdat het ook een
@@ -9,13 +10,15 @@ import java.util.*;
  */
 class Robot implements Object3D, Updatable {
     private UUID uuid;
+
+    private String state = "await";
     private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
     private boolean rotating = true, moving = true;
     private Node root, target, A0, A1, A2, A3;
     private Stack<Node> route;
     private Pathfinding pathFinder;
 
-    public Robot() {
+    public Robot () {
         this.uuid = UUID.randomUUID();
         route = new Stack<Node>();
         target = new Node("root");
@@ -93,6 +96,10 @@ class Robot implements Object3D, Updatable {
                 target = route.pop();
     }
 
+    public boolean goRoute(Stack<Node> route) {
+        return true;
+    }
+
     @Override
     public String getUUID() {
         return this.uuid.toString();
@@ -137,5 +144,9 @@ class Robot implements Object3D, Updatable {
     @Override
     public double getRotationZ() {
         return this.rotationZ;
+    }
+
+    public String getState() {
+        return state;
     }
 }
