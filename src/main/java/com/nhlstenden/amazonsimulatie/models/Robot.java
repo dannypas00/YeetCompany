@@ -22,8 +22,8 @@ class Robot implements Object3D, Updatable {
         this.uuid = UUID.randomUUID();
         route = new Stack<Node>();
         target = new Node("root");
-        target.setX(11);
-        target.setZ(-15);
+        target.setX(0);
+        target.setZ(0);
         x = target.getX();
         z = target.getZ();
     }
@@ -43,7 +43,7 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-            System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
+        //System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
         moveTo(target);
         rotateTo(target);
         return(true);

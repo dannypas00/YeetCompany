@@ -46,7 +46,7 @@
 
             window.addEventListener('resize', onWindowResize, false);
 
-            importModel("World", 500, 11, 0, -15);
+            importModel("World", 500, -11, 0, 15);
             //importModel("Yeeter", 1, 0, 2);
 
             let light = new THREE.DirectionalLight(0x404040, 1);
@@ -151,9 +151,7 @@
                         ];
                         var material = new THREE.MeshFaceMaterial(cubeMaterials);
                         var minecart = new THREE.Mesh(geometry, material);
-                        minecart.position.y = 0.4;
-                        minecart.position.x = 20;
-                        minecart.position.z = 15.5;
+                        minecart.position.y = 1.15;
 
                         var group = new THREE.Group();
                         group.add(minecart);

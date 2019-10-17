@@ -10,20 +10,17 @@ import java.util.*;
 class Minecart implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+    private double x = 1.5;
+    private double y = 2.15;
+    private double z = -10;
 
     private double rotationX = 0;
-    private double rotationY = 0;
+    private double rotationY = 0.5*Math.PI;
     private double rotationZ = 0;
 
-    private double targetx = -20;
-    private double targetz = 0;
-    private double startx;
-    private double startz;
+    private String location = "Out";
 
-    private double speed = 0.1;
+    private double linearSpeed = 0.1;
 
     public Stack<String> orders;
 
@@ -51,35 +48,45 @@ class Minecart implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        MoveTo(targetx, targetz, speed);
+        System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY);
+        if(x == 1.5 && z == 0){
+            location = "In";
+        }
+        if(x == 1.5 && z == -10){
+            location = "Out";
+        }
+        if(location == "In"){
+            moveTo(1.5,-10);
+        }
+        if(location == "Out"){
+            moveTo(1.5, 0);
+        }
+
 
         return true;
     }
 
-    public void MoveTo(double targetx, double targetz, double speed){
-        if (targetx > 0)
-        {
-            if (x < targetx){
-                this.x += speed;
-            }
-        }
-        else{
-            if (x > targetx){
-                this.x -= speed;
-            }
-        }
+    public void moveTo(double targetX, double targetZ) {
+        if (targetX - x < 0) {
+            if (targetX < x)
+                x -= linearSpeed;
+        } else
+            if (targetX > x)
+                x += linearSpeed;
 
-        if (targetz > 0)
-        {
-            if (z < targetz){
-                this.z += speed;
-            }
-        }
-        else{
-            if (z > targetz){
-                this.z -= speed;
-            }
-        }
+        if (targetZ - z < 0) {
+            if (targetZ < z)
+                z -= linearSpeed;
+        } else
+            if (targetZ > z)
+                z += linearSpeed;
+
+        if (Math.abs(x - targetX) < 2 * linearSpeed)
+            x = targetX;
+
+
+        if (Math.abs(z - targetZ) < 2 * linearSpeed)
+            z = targetZ;
     }
 
     @Override
