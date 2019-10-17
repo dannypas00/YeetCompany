@@ -44,8 +44,7 @@ public class Dijkstra {
         Integer sourceDistance = sourceNode.getDistance();
         if (sourceDistance + edgeWeigh < evaluationNode.getDistance()) {
             evaluationNode.setDistance(sourceDistance + edgeWeigh);
-            Stack<Node> shortestPath;
-            shortestPath = sourceNode.getShortestPath();
+            LinkedList<Node> shortestPath = new LinkedList<>(sourceNode.getShortestPath());
             shortestPath.push(sourceNode);
             evaluationNode.setShortestPath(shortestPath);
         }

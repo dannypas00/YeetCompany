@@ -96,16 +96,14 @@ public class Pathfinding implements Model {
         nodes[row][col].addDestination(nodes[row - 1][col], distance);
     }
 
-    private Stack<Node> getPath(Node node) {
-        Dijkstra.calculateShortestPathFromSource(node);
-        Stack<Node> path = node.getShortestPath();
+    private List<Node> getPath(Node node) {
+        Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
+        List<Node> path = node.getShortestPath();
         return path;
     }
 
-    public Stack<Node> getPathToItem(String item) {
-        System.out.println("Itemmap: " + itemMap.toString());
+    public List<Node> getPathToItem(String item) {
         Node target = itemMap.get(item);
-        //System.out.println("Map for item " + item + ": " + target.getName());
         return getPath(target);
     }
 
