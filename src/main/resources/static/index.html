@@ -25,10 +25,9 @@
     var socket;
 
     window.onload = function () {
-        var camera, scene, renderer;
-        var cameraControls;
+        let camera, scene, renderer, cameraControls;
 
-        var worldObjects = {};
+        let worldObjects = {};
 
         function init() {
             camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
@@ -42,16 +41,34 @@
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setPixelRatio(window.devicePixelRatio);
             renderer.setSize(window.innerWidth, window.innerHeight + 5);
+            renderer.shadowMap.enabled = true;
             document.body.appendChild(renderer.domElement);
 
             window.addEventListener('resize', onWindowResize, false);
 
-            importModel("Warehouse", 500, 0, -1, 0, 0);
+            importModel("World", 500, 0, -5);
+            //importModel("Yeeter", 1, 0, 2);
 
-
-            var light = new THREE.AmbientLight(0x404040);
+            let light = new THREE.DirectionalLight(0x404040, 1);
+            light.position.x = 10;
+            light.position.y = 30;
+            light.position.z = 10;
             light.intensity = 4;
+            let ambLight = new THREE.AmbientLight(0x404040);
+            ambLight.intensity = 0.75;
             scene.add(light);
+            scene.add(ambLight);
+
+            const skyboxLoader = new THREE.CubeTextureLoader();
+            const skybox = skyboxLoader.load([
+                'textures/skybox_day_side.png',
+                'textures/skybox_day_side.png',
+                'textures/skybox_day_top.png',
+                'textures/skybox_day_bottom.png',
+                'textures/skybox_day_side.png',
+                'textures/skybox_day_side.png'
+            ]);
+            scene.background = skybox;
         }
 
         /*
@@ -63,7 +80,7 @@
             const objLoader = new OBJLoader2();
             const mtlLoader = new MTLLoader();
             mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
-                const materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+                let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
                 objLoader.addMaterials(materials);
                 objLoader.load('models/' + name + '.obj', (root) => {
                     root.scale.set(size, size, size);

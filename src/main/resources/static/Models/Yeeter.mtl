@@ -10,7 +10,9 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Yeeter-RGB.png
+interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
+
+map_Kd World-RGB.png
 
 newmtl Mob_Head
 Ns 0.000000
@@ -21,4 +23,6 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Yeeter-RGB.png
+interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
+
+map_Kd World-RGB.png
