@@ -8,7 +8,7 @@ public class Node {
 
     private String name;
 
-    private List<Node> shortestPath = new LinkedList<>();
+    private Stack<Node> shortestPath = new Stack<>();
 
     private Integer distance = Integer.MAX_VALUE;
 
@@ -27,7 +27,7 @@ public class Node {
     public Integer getDistance() {
         return distance;
     }
-    public List<Node> getShortestPath() {
+    public Stack<Node> getShortestPath() {
         return shortestPath;
     }
     public Map<Node, Integer> getAdjacentNodes() {
@@ -46,7 +46,7 @@ public class Node {
     public void setDistance(Integer distance) {
         this.distance = distance;
     }
-    public void setShortestPath(List<Node> shortestPath) {
+    public void setShortestPath(Stack<Node> shortestPath) {
         this.shortestPath = shortestPath;
     }
     public void setX(int x) {

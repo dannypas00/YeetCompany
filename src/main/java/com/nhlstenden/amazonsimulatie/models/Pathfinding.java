@@ -31,41 +31,36 @@ public class Pathfinding implements Model {
                 switch (j) {
                     case 0:
                         if (i != 1)
-                            addDestinationLeft(j, i);
+                            addDestinationLeft(j, i, 8);
                         break;
                     case 2:
                     case 4:
                         if (i != 1) {
-                            addDestinationLeft(j, i);
-                            addDestinationAbove(j, i);
+                            addDestinationLeft(j, i, 8);
+                            addDestinationAbove(j, i, 6);
                         }
                         break;
                     case 6:
                         if (i != 1) {
-                            addDestinationLeft(j, i);
-                            addDestinationAbove(j, i);
+                            addDestinationLeft(j, i, 8);
+                            addDestinationAbove(j, i, 6);
                         }
                         break;
                     default:
-                        addDestinationAbove(j, i);
+                        addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX(15 + (15 * j));
-                n.setZ(15 * i);
+                n.setX(8 + (8 * j));
+                n.setZ(6 * i);
             }
         }
 
         nodes[0][0] = new Node("0, 0");
-        nodes[0][0].addDestination(nodes[0][1], 15);
-        nodes[3][0] = new Node("3, 0");
-        nodes[3][0].addDestination(nodes[3][1], 15);
-        nodes[3][0].setDistance(0);
-        nodes[6][0] = new Node("6, 0");
-        nodes[6][0].addDestination(nodes[6][1], 15);
+        nodes[0][0].addDestination(nodes[0][1], 2);
 
         for (int i = 2; i < 4; i++){
-            addDestinationAbove(i, 2);
-            addDestinationAbove(i, 4);
+            addDestinationAbove(i, 2, 6);
+            addDestinationAbove(i, 4, 6);
         }
 
         //Add nodes to graph
@@ -93,12 +88,12 @@ public class Pathfinding implements Model {
         System.out.print("\r\n");
     }
 
-    private void addDestinationLeft(int row, int col) {
-        nodes[row][col].addDestination(nodes[row][col-1], 15);
+    private void addDestinationLeft(int row, int col, int distance) {
+        nodes[row][col].addDestination(nodes[row][col-1], distance);
     }
 
-    private void addDestinationAbove(int row, int col) {
-        nodes[row][col].addDestination(nodes[row - 1][col], 15);
+    private void addDestinationAbove(int row, int col, int distance) {
+        nodes[row][col].addDestination(nodes[row - 1][col], distance);
     }
 
     private Stack<Node> getPath(Node node) {
