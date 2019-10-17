@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.util.Stack;
 import java.util.UUID;
 
 /*
@@ -10,6 +11,9 @@ import java.util.UUID;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
+    private Stack<Node> route;
+    private String state = "await";
+
     private double x = 0;
     private double y = 0;
     private double z = 0;
@@ -18,7 +22,7 @@ class Robot implements Object3D, Updatable {
     private double rotationY = 0;
     private double rotationZ = 0;
 
-    public Robot() {
+    public Robot () {
         this.uuid = UUID.randomUUID();
     }
 
@@ -43,6 +47,10 @@ class Robot implements Object3D, Updatable {
             this.z += 0.5;
         }
         
+        return true;
+    }
+
+    public boolean goRoute(Stack<Node> route) {
         return true;
     }
 
@@ -90,5 +98,9 @@ class Robot implements Object3D, Updatable {
     @Override
     public double getRotationZ() {
         return this.rotationZ;
+    }
+
+    public String getState() {
+        return state;
     }
 }
