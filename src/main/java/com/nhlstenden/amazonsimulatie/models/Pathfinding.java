@@ -50,13 +50,16 @@ public class Pathfinding implements Model {
                         addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX(8 + (8 * j));
-                n.setZ(6 * i);
+                n.setX(8 + (8 * j) + 11);
+                n.setZ((6 * i) - 15);
             }
         }
 
+        //Starting Point
         nodes[0][0] = new Node("0, 0");
         nodes[0][0].addDestination(nodes[0][1], 2);
+        nodes[0][0].setX(11);
+        nodes[0][0].setZ(-15);
 
         for (int i = 2; i < 4; i++){
             addDestinationAbove(i, 2, 6);
