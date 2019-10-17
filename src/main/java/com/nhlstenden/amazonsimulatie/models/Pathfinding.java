@@ -50,16 +50,16 @@ public class Pathfinding implements Model {
                         addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX(8 + (8 * j) + 11);
-                n.setZ((6 * i) - 15);
+                n.setX(8 + (8 * j));
+                n.setZ((6 * i));
             }
         }
 
         //Starting Point
         nodes[0][0] = new Node("0, 0");
         nodes[0][0].addDestination(nodes[0][1], 2);
-        nodes[0][0].setX(11);
-        nodes[0][0].setZ(-15);
+        nodes[0][0].setX(0);
+        nodes[0][0].setZ(0);
 
         for (int i = 2; i < 4; i++){
             addDestinationAbove(i, 2, 6);
@@ -69,13 +69,10 @@ public class Pathfinding implements Model {
         //Add nodes to graph
         graph = new Graph();
 
-        for (Node[] a : nodes) {
-            for (Node n : a) {
-                if (n != null) {
+        for (Node[] a : nodes)
+            for (Node n : a)
+                if (n != null)
                     graph.addNode(n);
-                }
-            }
-        }
 
         for (int i = 0; i < items.length; i++) {
             int rand = i; //(int) Math.ceil(Math.random()*4);
@@ -84,7 +81,7 @@ public class Pathfinding implements Model {
             itemMap.put(items[i], location);
         }
 
-        System.out.print("Path to dirt ");
+        System.out.print("Path to tnt");
         for (Node n : getPathToItem("tnt")) {
             System.out.print("-> | " + n.getName() + " | ");
         }
