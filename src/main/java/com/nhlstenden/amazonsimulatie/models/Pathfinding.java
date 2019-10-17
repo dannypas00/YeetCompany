@@ -86,10 +86,6 @@ public class Pathfinding implements Model {
             itemMap.put(items[i], location);
         }
 
-        System.out.print("Path to tnt");
-        for (Node n : getPathToItem("tnt")) {
-            System.out.print("-> | " + n.getName() + " | ");
-        }
         System.out.print("\r\n");
     }
 
