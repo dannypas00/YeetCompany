@@ -10,7 +10,7 @@ import java.util.*;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x = 4, y, z = 4, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    private double x = 16, y, z = 16, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
     private boolean rotating = true, moving = true;
 
     private Node target, root, A0, A1, A2, A3, A4, A5, A6;
@@ -25,32 +25,32 @@ class Robot implements Object3D, Updatable {
         root.setZ((int)Math.round(z));
 
         A0 = new Node(" A0");
-        A0.setX(-4);
-        A0.setZ(4);
+        A0.setX(-16);
+        A0.setZ(16);
 
         A1 = new Node(" A1");
-        A1.setX(-4);
-        A1.setZ(-4);
+        A1.setX(-16);
+        A1.setZ(-16);
 
         A2 = new Node(" A2");
-        A2.setX(4);
-        A2.setZ(-4);
+        A2.setX(16);
+        A2.setZ(-16);
 
         A3 = new Node(" A3");
-        A3.setX(4);
-        A3.setZ(4);
+        A3.setX(16);
+        A3.setZ(16);
 
-        A4 = new Node(" A4");
-        A4.setX(-4);
-        A4.setZ(4);
+        A4 = new Node(" A16");
+        A4.setX(-16);
+        A4.setZ(16);
 
         A5 = new Node(" A5");
-        A5.setX(-4);
-        A5.setZ(-4);
+        A5.setX(-16);
+        A5.setZ(-16);
 
         A6 = new Node(" A6");
-        A6.setX(4);
-        A6.setZ(-4);
+        A6.setX(16);
+        A6.setZ(-16);
 
         nodeStack = new Stack<Node>();
         nodeStack.push(A6);
@@ -88,7 +88,7 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        //System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
+        System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
         MoveTo(target);
         RotateTo(target);
 
