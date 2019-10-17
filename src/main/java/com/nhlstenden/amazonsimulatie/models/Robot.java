@@ -9,68 +9,20 @@ import java.util.*;
  */
 class Robot implements Object3D, Updatable {
     private UUID uuid;
-
-    private double x = 16, y, z = 16, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
     private boolean rotating = true, moving = true;
-
-    private Node target, root, A0, A1, A2, A3, A4, A5, A6;
-
-    private Stack<Node> nodeStack;
+    private Node root, target, A0, A1, A2, A3;
+    private Stack<Node> route;
+    private Pathfinding pathFinder;
 
     public Robot() {
         this.uuid = UUID.randomUUID();
-
-        root= new Node(" startingNode");
-        root.setX((int)Math.round(x));
-        root.setZ((int)Math.round(z));
-
-        A0 = new Node(" A0");
-        A0.setX(-16);
-        A0.setZ(16);
-
-        A1 = new Node(" A1");
-        A1.setX(-16);
-        A1.setZ(-16);
-
-        A2 = new Node(" A2");
-        A2.setX(16);
-        A2.setZ(-16);
-
-        A3 = new Node(" A3");
-        A3.setX(16);
-        A3.setZ(16);
-
-        A4 = new Node(" A16");
-        A4.setX(-16);
-        A4.setZ(16);
-
-        A5 = new Node(" A5");
-        A5.setX(-16);
-        A5.setZ(-16);
-
-        A6 = new Node(" A6");
-        A6.setX(16);
-        A6.setZ(-16);
-
-        nodeStack = new Stack<Node>();
-        nodeStack.push(A6);
-        nodeStack.push(A5);
-        nodeStack.push(A4);
-        nodeStack.push(A3);
-        nodeStack.push(A2);
-        nodeStack.push(A1);
-        nodeStack.push(A0);
-
-        nodeStack.push(A0);
-        nodeStack.push(A1);
-        nodeStack.push(A2);
-        nodeStack.push(A3);
-        nodeStack.push(A4);
-        nodeStack.push(A5);
-        nodeStack.push(A6);
-
-
-        target = nodeStack.pop();
+        route = new Stack<Node>();
+        target = new Node("root");
+        target.setX(11);
+        target.setZ(-15);
+        x = target.getX();
+        z = target.getZ();
     }
 
     /*
@@ -88,62 +40,57 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
-        MoveTo(target);
-        RotateTo(target);
+        // System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
+        moveTo(target);
+        rotateTo(target);
+        return(true);
+    }
 
-
-
-
-        return true;
+    public boolean goRoute (Stack<Node> route) {
+        if (this.route.isEmpty()) {
+            this.route = route;
+            return true;
+        }
+        else
+            return false;
     }
 
     /*Function to rotate the robot towards the target*/
-    public void RotateTo(Node targetNode) {
+    private void rotateTo(Node targetNode) {
         deltaX = x - targetNode.getX();
         deltaZ = z - targetNode.getZ();
         rad = Math.atan2(deltaZ, deltaX);
-        if(rad < 0){
+        if(rad < 0)
             rad += 2*Math.PI;
-        }
         rotationY = rad + 0.5*Math.PI;
     }
 
     /*Function to move towards the target*/
-    public void MoveTo(Node targetNode) {
-        if (targetNode.getX() - x < 0) {
-            if (targetNode.getX() < x) {
+    public void moveTo(Node targetNode) {
+        if (targetNode.getX() - x < 0)
+            if (targetNode.getX() < x)
                 x -= linearSpeed;
-            }
-        } else {
-            if (targetNode.getX() > x) {
+        else
+            if (targetNode.getX() > x)
                 x += linearSpeed;
-            }
-        }
-        if (targetNode.getZ() - z < 0) {
-            if (targetNode.getZ() < z) {
+
+        if (targetNode.getZ() - z < 0)
+            if (targetNode.getZ() < z)
                 z -= linearSpeed;
-            }
-        } else {
-            if (targetNode.getZ() > z) {
+        else
+            if (targetNode.getZ() > z)
                 z += linearSpeed;
-            }
-        }
 
-        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed) {
+        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed)
             x = targetNode.getX();
-        }
 
 
-        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed) {
+        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed)
             z = targetNode.getZ();
-        }
 
-        if ((x == targetNode.getX() && z == targetNode.getZ())) {
-            if (!nodeStack.isEmpty()) {
-                target = nodeStack.pop();
-            }
-        }
+        if ((x == targetNode.getX() && z == targetNode.getZ()))
+            if (!route.isEmpty())
+                target = route.pop();
     }
 
     @Override
