@@ -22,7 +22,7 @@
         return JSON.parse(input);
     }
 
-    var socket;
+    let socket;
 
     window.onload = function () {
         let camera, scene, renderer, cameraControls;
@@ -46,7 +46,7 @@
 
             window.addEventListener('resize', onWindowResize, false);
 
-            importModel("World", 500, 0, -5);
+            importModel("World", 500, 0, 0);
             //importModel("Yeeter", 1, 0, 2);
 
             let light = new THREE.DirectionalLight(0x404040, 1);
@@ -113,7 +113,6 @@
         socket.onmessage = function (event) {
             //Hier wordt het commando dat vanuit de server wordt gegeven uit elkaar gehaald
             var command = parseCommand(event.data);
-
             //Wanneer het commando is "object_update", dan wordt deze code uitgevoerd. Bekijk ook de servercode om dit goed te begrijpen.
             if (command.command == "object_update") {
                 //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
@@ -130,33 +129,29 @@
                             new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
                             new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
                         ];
+                        console.log("Robot!");
                         var material = new THREE.MeshFaceMaterial(cubeMaterials);
                         var robot = new THREE.Mesh(geometry, material);
-                        robot.position.y = 0.15;
+                        robot.position.y = 2.15;
 
                         var group = new THREE.Group();
                         group.add(robot);
-
                         scene.add(group);
                         worldObjects[command.parameters.uuid] = group;
                     }
                 }
-
                 /*
                  * Deze code wordt elke update uitgevoerd. Het update alle positiegegevens van het 3D object.
                  */
                 var object = worldObjects[command.parameters.uuid];
-
                 object.position.x = command.parameters.x;
                 object.position.y = command.parameters.y;
                 object.position.z = command.parameters.z;
-
                 object.rotation.x = command.parameters.rotationX;
                 object.rotation.y = command.parameters.rotationY;
                 object.rotation.z = command.parameters.rotationZ;
             }
         }
-
         init();
         animate();
     }
