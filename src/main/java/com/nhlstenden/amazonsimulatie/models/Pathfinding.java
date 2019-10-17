@@ -31,71 +31,74 @@ public class Pathfinding implements Model {
                 switch (j) {
                     case 0:
                         if (i != 1)
-                            addDestinationLeft(j, i);
+                            addDestinationLeft(j, i, 8);
+                        break;
+                    case 2:
+                    case 4:
+                        if (i != 1) {
+                            addDestinationLeft(j, i, 8);
+                            addDestinationAbove(j, i, 6);
+                        }
                         break;
                     case 6:
                         if (i != 1) {
-                            addDestinationLeft(j, i);
-                            addDestinationAbove(j, i);
+                            addDestinationLeft(j, i, 8);
+                            addDestinationAbove(j, i, 6);
                         }
+                        break;
                     default:
-                        addDestinationAbove(j, i);
+                        addDestinationAbove(j, i, 6);
+                        break;
                 }
-                n.setX(15 + (15 * j));
-                n.setZ(15 * i);
+                n.setX(8 + (8 * j));
+                n.setZ((6 * i));
             }
         }
 
-        for (int i = 0; i < 3; i++) {
-            nodes[i][0] = new Node(i + ", 0");
-            nodes[i][0].addDestination(nodes[i*3][1], 15);
-        }
-
-        for (int i = 2; i < 4; i++){
-            addDestinationAbove(i, 2);
-            addDestinationAbove(i, 4);
-        }
+        //Starting Point
+        nodes[0][0] = new Node("0, 0");
+        nodes[0][0].addDestination(nodes[0][1], 2);
+        nodes[0][0].setX(0);
+        nodes[0][0].setZ(0);
 
         //Add nodes to graph
         graph = new Graph();
 
-        for (Node[] a : nodes) {
-            for (Node n : a) {
-                if (n != null) {
+        for (Node[] a : nodes)
+            for (Node n : a)
+                if (n != null)
                     graph.addNode(n);
-                }
-            }
-        }
 
         for (int i = 0; i < items.length; i++) {
-            itemMap.put(items[i], nodes[(int) Math.ceil(Math.random()*4)][i]);
+            int rand = i; //(int) Math.ceil(Math.random()*4);
+            Node location = nodes[rand][i];
+            System.out.println("Putting item " + items[i] + " down at location " + location.getName());
+            itemMap.put(items[i], location);
         }
 
-        System.out.print("Path to dirt ");
-        for (Node n : getPathToItem("dirt")) {
+        System.out.print("Path to tnt");
+        for (Node n : getPathToItem("tnt")) {
             System.out.print("-> | " + n.getName() + " | ");
         }
         System.out.print("\r\n");
     }
 
-    private void addDestinationLeft(int row, int col) {
-        nodes[row][col].addDestination(nodes[row][col-1], 15);
+    private void addDestinationLeft(int row, int col, int distance) {
+        nodes[row][col].addDestination(nodes[row][col-1], distance);
     }
 
-    private void addDestinationAbove(int row, int col) {
-        nodes[row][col].addDestination(nodes[row - 1][col], 15);
+    private void addDestinationAbove(int row, int col, int distance) {
+        nodes[row][col].addDestination(nodes[row - 1][col], distance);
     }
 
-    private Stack<Node> getPath(Node node) {
-        Dijkstra.calculateShortestPathFromSource(node);
-        Stack<Node> path = node.getShortestPath();
+    private List<Node> getPath(Node node) {
+        Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
+        List<Node> path = node.getShortestPath();
         return path;
     }
 
-    public Stack<Node> getPathToItem(String item) {
-        System.out.println("Itemmap: " + itemMap.toString());
+    public List<Node> getPathToItem(String item) {
         Node target = itemMap.get(item);
-        //System.out.println("Map for item " + item + ": " + target.getName());
         return getPath(target);
     }
 

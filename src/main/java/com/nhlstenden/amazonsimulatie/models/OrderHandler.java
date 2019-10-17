@@ -21,7 +21,10 @@ public class OrderHandler implements Model {
     public void update() {
         for (Robot r : robots) {
             if (r.getState() == "await") {
-                r.goRoute(pathFinder.getPathToItem(orders.remove()));
+                Stack<Node> route = new Stack<>();
+                for (Node n : pathFinder.getPathToItem(orders.remove()))
+                    route.push(n);
+                r.goRoute(route);
             }
         }
     }
