@@ -2,11 +2,7 @@ package com.nhlstenden.amazonsimulatie.base;
 
 import java.io.IOException;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.nhlstenden.amazonsimulatie.controllers.Controller;
-import com.nhlstenden.amazonsimulatie.controllers.OrderController;
 import com.nhlstenden.amazonsimulatie.controllers.SimulationController;
 import com.nhlstenden.amazonsimulatie.models.Pathfinding;
 import com.nhlstenden.amazonsimulatie.models.World;

@@ -1,5 +1,6 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import java.util.Stack;
 import java.util.UUID;
 
 /*
@@ -10,25 +11,21 @@ import java.util.UUID;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+    private String state = "await";
+    private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    private boolean rotating = true, moving = true;
+    private Node root, target, A0, A1, A2, A3;
+    private Stack<Node> route;
+    private Pathfinding pathFinder;
 
-    private double rotationX = 0;
-    private double rotationY = 0;
-    private double rotationZ = 0;
-
-    private double targetx = 0;
-    private double targetz = 0;
-    private double startx;
-    private double startz;
-
-    private double speed = 0.1;
-
-
-    public Robot() {
+    public Robot () {
         this.uuid = UUID.randomUUID();
-
+        route = new Stack<Node>();
+        target = new Node("root");
+        target.setX(11);
+        target.setZ(-15);
+        x = target.getX();
+        z = target.getZ();
     }
 
     /*
@@ -46,47 +43,57 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        RotateTo(targetx, targetz);
-        MoveTo(targetx, targetz, speed);
-
-        return true;
+            System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
+        moveTo(target);
+        rotateTo(target);
+        return(true);
     }
 
-    public void RotateTo(double targetx, double targetz) {
-        double diffx = targetx - x;
-        double diffz = targetz - z;
-        double theta = Math.atan(diffz/diffx);
-        theta *= 1/Math.PI;
-        theta += 0.25;
-        if(rotationY < theta + 0.25){
-            this.rotationY += 0.01;
+    public boolean goRoute (Stack<Node> route) {
+        if (this.route.isEmpty()) {
+            this.route = route;
+            return true;
         }
+        else
+            return false;
     }
 
-    public void MoveTo(double targetx, double targetz, double speed){
-        if (targetx > 0)
-        {
-            if (x < targetx){
-                this.x += speed;
-            }
-        }
-        else{
-            if (x > targetx){
-                this.x -= speed;
-            }
-        }
+    /*Function to rotate the robot towards the target*/
+    private void rotateTo(Node targetNode) {
+        deltaX = x - targetNode.getX();
+        deltaZ = z - targetNode.getZ();
+        rad = Math.atan2(deltaZ, deltaX);
+        if(rad < 0)
+            rad += 2*Math.PI;
+        rotationY = rad + 0.5*Math.PI;
+    }
 
-        if (targetz > 0)
-        {
-            if (z < targetz){
-                this.z += speed;
-            }
-        }
-        else{
-            if (z > targetz){
-                this.z -= speed;
-            }
-        }
+    /*Function to move towards the target*/
+    public void moveTo(Node targetNode) {
+        if (targetNode.getX() - x < 0)
+            if (targetNode.getX() < x)
+                x -= linearSpeed;
+        else
+            if (targetNode.getX() > x)
+                x += linearSpeed;
+
+        if (targetNode.getZ() - z < 0)
+            if (targetNode.getZ() < z)
+                z -= linearSpeed;
+        else
+            if (targetNode.getZ() > z)
+                z += linearSpeed;
+
+        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed)
+            x = targetNode.getX();
+
+
+        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed)
+            z = targetNode.getZ();
+
+        if ((x == targetNode.getX() && z == targetNode.getZ()))
+            if (!route.isEmpty())
+                target = route.pop();
     }
 
     @Override
@@ -133,5 +140,9 @@ class Robot implements Object3D, Updatable {
     @Override
     public double getRotationZ() {
         return this.rotationZ;
+    }
+
+    public String getState() {
+        return state;
     }
 }
