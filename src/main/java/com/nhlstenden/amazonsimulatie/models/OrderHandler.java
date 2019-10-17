@@ -15,6 +15,8 @@ public class OrderHandler implements Model {
 
     public OrderHandler() {  }
 
+    // TODO Add way of inputting orders
+
     @Override
     public void update() {
         for (Robot r : robots) {
