@@ -20,6 +20,7 @@ public class World implements Model {
      * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
      */
     private List<Object3D> worldObjects;
+    private List<Robot> robots = new ArrayList<>();
 
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
@@ -32,7 +33,11 @@ public class World implements Model {
      */
     public World() {
         this.worldObjects = new ArrayList<>();
-        this.worldObjects.add(new Robot());
+        for (int i = 0; i < 1; i++) {
+            Robot robot = new Robot();
+            this.worldObjects.add(robot);
+            this.robots.add(robot);
+        }
         this.worldObjects.add(new Minecart());
     }
 
@@ -76,13 +81,7 @@ public class World implements Model {
         return returnList;
     }
 
-    public Robot[] getRobotsAsArray() {
-        Robot[] robots = new Robot[] {};
-        for (int i = 0; i < this.worldObjects.size(); i++) {
-            if (this.worldObjects.get(i) instanceof Robot) {
-                robots[i] = (Robot) this.worldObjects.get(i);
-            }
-        }
+    public List<Robot> getRobotsAsList() {
         return robots;
     }
 }

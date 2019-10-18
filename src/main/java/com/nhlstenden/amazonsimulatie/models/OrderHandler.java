@@ -8,7 +8,7 @@ import java.util.Stack;
 
 public class OrderHandler implements Model {
 
-    private Robot[] robots;
+    private List<Robot> robots;
     private Pathfinding pathFinder = new Pathfinding();
     private Stack<String> Orders = new Stack<>();
     private Queue<String> orders = new LinkedList<>();
@@ -24,13 +24,18 @@ public class OrderHandler implements Model {
 
     @Override
     public void update() {
-        robots = (Robot[]) world.getRobotsAsArray();
+        robots = world.getRobotsAsList();
         for (Robot r : robots) {
             if (r.getState() == "await") {
                 Stack<Node> route = new Stack<>();
                 for (Node n : pathFinder.getPathToItem(orders.poll())) {
-                    route.push(n);
-                    System.out.println("Added node " + n.getName() + " to route");
+                    if (n.getName() == "0, 0") {
+                        System.out.println("Skipped 0, 0");
+                        break;
+                    } else {
+                        route.push(n);
+                        System.out.println("Added node " + n.getName() + " to route");
+                    }
                 }
                 r.goRoute(route);
             }
