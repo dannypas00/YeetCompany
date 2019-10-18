@@ -39,13 +39,15 @@ class Minecart implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if(location == "Out"){
+        if(location == "Out" && z != -10){
             moveTo(1.5,-10);
+            return true;
         }
-        if(location == "In"){
+        if(location == "In" && z != 0){
             moveTo(1.5, 0);
+            return true;
         }
-        return true;
+        return false;
     }
 
     public void moveTo(double targetX, double targetZ) {

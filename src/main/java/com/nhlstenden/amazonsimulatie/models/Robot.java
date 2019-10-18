@@ -16,6 +16,7 @@ class Robot implements Object3D, Updatable {
     private long targetTime;
     private Node target;
     private Stack<Node> route, breadcrumbs = new Stack<Node>();
+    private boolean carrying = false;
 
     public Robot () {
         this.uuid = UUID.randomUUID();
@@ -40,8 +41,8 @@ class Robot implements Object3D, Updatable {
         if (target != null && System.currentTimeMillis() > targetTime) {
             moveTo(target);
             rotateTo(target);
-        }
-        return true;
+            return true;
+        } else return false;
     }
 
     public boolean goRoute (Stack<Node> route, String order) {
@@ -49,6 +50,7 @@ class Robot implements Object3D, Updatable {
             this.route = route;
             target = route.pop();
             breadcrumbs.push(target);
+            carrying = carrying && (order == "put" && state == "moving" || order == "pull" && state == "returning");
             return true;
         } else return false;
     }
@@ -114,6 +116,10 @@ class Robot implements Object3D, Updatable {
         this.state = state;
     }
 
+    private void setCarrying(boolean carrying) {
+        this.carrying = carrying;
+    }
+
     @Override
     public String getUUID() {
         return this.uuid.toString();
@@ -133,6 +139,10 @@ class Robot implements Object3D, Updatable {
     @Override
     public double getX() {
         return this.x;
+    }
+
+    public boolean getCarrying() {
+        return this.carrying;
     }
 
     @Override
