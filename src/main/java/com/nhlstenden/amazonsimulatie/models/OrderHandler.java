@@ -21,6 +21,8 @@ public class OrderHandler implements Model {
         this.world = (World) world;
         orders.add("dirt");
         orders.add("glowstone");
+        orders.add("dirt");
+        orders.add("tnt");
     }
 
     // TODO Add way of inputting orders
