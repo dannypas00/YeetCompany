@@ -7,6 +7,7 @@ import java.util.*;
 public class OrderHandler implements Model {
     private World world;
     private List<Robot> robots;
+    private List<Minecart> minecarts;
     private Pathfinding pathFinder = new Pathfinding();
 
     private Queue<String> order = new LinkedList<>();
@@ -15,6 +16,8 @@ public class OrderHandler implements Model {
 
     private Rack[] racks = new Rack[15];
     private HashMap<String, Rack> rackMap = new HashMap<>();
+
+    private boolean minecartOnDock = false;
 
     public OrderHandler(Model world) {
         this.world = (World) world;
@@ -43,9 +46,22 @@ public class OrderHandler implements Model {
     @Override
     public void update() {
         robots = world.getRobotsAsList();
+        minecarts = world.getMinecartAsList();
+        for (Minecart m : minecarts) {
+            if (order.isEmpty() || order == null)
+                m.setLocation("Out");
+            else
+                m.setLocation("In");
+
+            if (m.getLocation() == "minecartIsOnDock")
+                minecartOnDock = true;
+            else if (m.getLocation() == "minecartIsOnStarting")
+                minecartOnDock = false;
+            else
+                minecartOnDock = false;
+        }
         for (Robot r : robots) {
-            if (r.getState() == "await") {
-                // Incoming orders
+            if (r.getState() == "await" && minecartOnDock == true) {
                 Stack<Node> route = new Stack<>();
                 if (!order.isEmpty()) {
                     String item = order.poll();
