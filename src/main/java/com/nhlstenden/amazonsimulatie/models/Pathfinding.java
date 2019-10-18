@@ -80,8 +80,8 @@ public class Pathfinding implements Model {
                     graph.addNode(n);
 
         for (int i = 0; i < items.length; i++) {
-            int rand1 = (int) Math.ceil(Math.random()*4);
-            int rand2 = (int) Math.floor(Math.random()*6);
+            int rand1 = 4; //(int) Math.ceil(Math.random()*4);
+            int rand2 = i; //(int) Math.floor(Math.random()*6);
             Node location = nodes[rand2][rand1];
             System.out.println("Putting item " + items[i] + " down at location " + location.getName());
             itemMap.put(items[i], location);

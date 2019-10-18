@@ -48,7 +48,6 @@ class Minecart implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY);
         if(x == 1.5 && z == 0){
             location = "In";
         }

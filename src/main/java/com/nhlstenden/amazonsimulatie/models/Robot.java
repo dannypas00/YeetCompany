@@ -20,12 +20,7 @@ class Robot implements Object3D, Updatable {
 
     public Robot () {
         this.uuid = UUID.randomUUID();
-        route = new Stack<Node>();
-        target = new Node("root");
-        target.setX(0);
-        target.setZ(0);
-        x = target.getX();
-        z = target.getZ();
+        System.out.println("[" + this.getUUID().toString() + "] Robot has been instantiated");
     }
 
     /*
@@ -44,18 +39,23 @@ class Robot implements Object3D, Updatable {
     @Override
     public boolean update() {
         //System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
-        moveTo(target);
-        rotateTo(target);
-        return(true);
+        if (target != null) {
+            moveTo(target);
+            rotateTo(target);
+        }
+        return true;
     }
 
     public boolean goRoute (Stack<Node> route) {
-        if (this.route.isEmpty()) {
-            this.route = route;
-            return true;
-        }
-        else
-            return false;
+        if (this.route != null) {
+            if (this.route.isEmpty()) {
+                this.route = route;
+                target = route.pop();
+                System.out.println("POP! " + target.getName());
+                return true;
+            } else
+                return false;
+        } else return false;
     }
 
     /*Function to rotate the robot towards the target*/
@@ -92,8 +92,10 @@ class Robot implements Object3D, Updatable {
             z = targetNode.getZ();
 
         if ((x == targetNode.getX() && z == targetNode.getZ()))
-            if (!route.isEmpty())
+            if (!route.isEmpty()) {
                 target = route.pop();
+                System.out.println("POP! " + target.getName());
+            }
     }
 
     @Override

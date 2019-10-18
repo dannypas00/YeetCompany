@@ -10,14 +10,13 @@ public class OrderHandler implements Model {
 
     private List<Robot> robots;
     private Pathfinding pathFinder = new Pathfinding();
-    private Stack<String> Orders = new Stack<>();
     private Queue<String> orders = new LinkedList<>();
     World world;
     private final String[] validOrders = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
 
     public OrderHandler(Model world) {
         this.world = (World) world;
-        orders.add("dirt");
+        orders.add("tnt");
     }
 
     // TODO Add way of inputting orders
@@ -28,16 +27,13 @@ public class OrderHandler implements Model {
         for (Robot r : robots) {
             if (r.getState() == "await") {
                 Stack<Node> route = new Stack<>();
-                for (Node n : pathFinder.getPathToItem(orders.poll())) {
-                    if (n.getName() == "0, 0") {
-                        System.out.println("Skipped 0, 0");
-                        break;
-                    } else {
+                if (!orders.isEmpty()) {
+                    for (Node n : pathFinder.getPathToItem(orders.poll())) {
                         route.push(n);
                         System.out.println("Added node " + n.getName() + " to route");
                     }
+                    r.goRoute(route);
                 }
-                r.goRoute(route);
             }
         }
     }
