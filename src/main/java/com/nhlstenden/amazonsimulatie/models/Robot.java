@@ -68,16 +68,18 @@ class Robot implements Object3D, Updatable {
 
     /*Function to move towards the target*/
     public void moveTo(Node targetNode) {
-        if (targetNode.getX() - x < 0)
+        if (targetNode.getX() - x < 0) {
             if (targetNode.getX() < x)
                 x -= linearSpeed;
+        }
         else
             if (targetNode.getX() > x)
                 x += linearSpeed;
 
-        if (targetNode.getZ() - z < 0)
+        if (targetNode.getZ() - z < 0) {
             if (targetNode.getZ() < z)
                 z -= linearSpeed;
+        }
         else
             if (targetNode.getZ() > z)
                 z += linearSpeed;

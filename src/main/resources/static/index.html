@@ -129,7 +129,6 @@
                             new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
                             new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
                         ];
-                        console.log("Robot!");
                         var material = new THREE.MeshFaceMaterial(cubeMaterials);
                         var robot = new THREE.Mesh(geometry, material);
                         robot.position.y = 2.15;
