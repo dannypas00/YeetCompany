@@ -76,11 +76,11 @@ public class World implements Model {
         return returnList;
     }
 
-    public List<Robot> getRobotsAsList() {
-        ArrayList<Robot> robots = new ArrayList<>();
-        for (Object3D object : this.worldObjects) {
-            if (object instanceof Robot) {
-                robots.add((Robot) object);
+    public Robot[] getRobotsAsArray() {
+        Robot[] robots = new Robot[] {};
+        for (int i = 0; i < this.worldObjects.size(); i++) {
+            if (this.worldObjects.get(i) instanceof Robot) {
+                robots[i] = (Robot) this.worldObjects.get(i);
             }
         }
         return robots;
