@@ -14,6 +14,7 @@ class Minecart implements Object3D, Updatable {
 
     private String location;
     private double linearSpeed = 0.1;
+    private long targetTime;
 
     public Stack<String> orders;
 
@@ -69,6 +70,11 @@ class Minecart implements Object3D, Updatable {
         if (Math.abs(z - targetZ) < 2 * linearSpeed)
             z = targetZ;
     }
+
+    private void waiting(long seconds){
+        targetTime = System.currentTimeMillis() + (seconds*1000);
+    }
+
     public void setLocation(String location){
         this.location = location;
     }

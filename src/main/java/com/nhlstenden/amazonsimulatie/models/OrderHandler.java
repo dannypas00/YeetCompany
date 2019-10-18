@@ -37,7 +37,7 @@ public class OrderHandler implements Model {
 
             if (m.getLocation() == "minecartIsOnDock")
                 minecartOnDock = true;
-            if (m.getLocation() == "minecartIsOnStarting")
+            else if (m.getLocation() == "minecartIsOnStarting")
                 minecartOnDock = false;
             else
                 minecartOnDock = false;
