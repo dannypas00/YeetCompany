@@ -7,18 +7,20 @@ import java.util.Stack;
 
 public class OrderHandler implements Model {
 
-    private Robot[] robots = new Robot[] {};
+    private Robot[] robots;
     private Pathfinding pathFinder = new Pathfinding();
     private Stack<String> Orders = new Stack<>();
     private Queue<String> orders;
+    World world;
     private final String[] validOrders = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
 
-    public OrderHandler() {  }
+    public OrderHandler(Model world) { this.world = (World) world; }
 
     // TODO Add way of inputting orders
 
     @Override
     public void update() {
+        robots = (Robot[]) world.getRobotsAsList().toArray();
         for (Robot r : robots) {
             if (r.getState() == "await") {
                 Stack<Node> route = new Stack<>();

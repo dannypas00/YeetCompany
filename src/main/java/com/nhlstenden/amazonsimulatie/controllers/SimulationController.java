@@ -15,10 +15,11 @@ import com.nhlstenden.amazonsimulatie.views.View;
  */
 public class SimulationController extends Controller {
 
-    private OrderHandler orderHandler = new OrderHandler();
+    private OrderHandler orderHandler;
 
     public SimulationController(Model model) {
         super(model); //Met dit onderdeel roep je de constructor aan van de superclass (Controller)
+        orderHandler = new OrderHandler(model);
     }
 
     /*

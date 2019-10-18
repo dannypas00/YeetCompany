@@ -75,4 +75,14 @@ public class World implements Model {
 
         return returnList;
     }
+
+    public List<Robot> getRobotsAsList() {
+        ArrayList<Robot> robots = new ArrayList<>();
+        for (Object3D object : this.worldObjects) {
+            if (object instanceof Robot) {
+                robots.add((Robot) object);
+            }
+        }
+        return robots;
+    }
 }
