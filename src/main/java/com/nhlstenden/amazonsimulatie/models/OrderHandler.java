@@ -24,12 +24,14 @@ public class OrderHandler implements Model {
 
     @Override
     public void update() {
-        robots = (Robot[]) world.getRobotsAsList().toArray();
+        robots = (Robot[]) world.getRobotsAsArray();
         for (Robot r : robots) {
             if (r.getState() == "await") {
                 Stack<Node> route = new Stack<>();
-                for (Node n : pathFinder.getPathToItem(orders.poll()))
+                for (Node n : pathFinder.getPathToItem(orders.poll())) {
                     route.push(n);
+                    System.out.println("Added node " + n.getName() + " to route");
+                }
                 r.goRoute(route);
             }
         }
