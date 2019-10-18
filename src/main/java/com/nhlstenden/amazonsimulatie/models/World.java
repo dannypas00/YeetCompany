@@ -26,7 +26,6 @@ public class World implements Model {
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
      */
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-
     /*
      * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
      * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
@@ -34,6 +33,7 @@ public class World implements Model {
     public World() {
         this.worldObjects = new ArrayList<>();
         this.worldObjects.add(new Robot());
+        this.worldObjects.add(new Minecart());
     }
 
     /*
@@ -47,13 +47,10 @@ public class World implements Model {
      */
     @Override
     public void update() {
-        for (Object3D object : this.worldObjects) {
-            if(object instanceof Updatable) {
-                if (((Updatable)object).update()) {
+        for (Object3D object : this.worldObjects)
+            if(object instanceof Updatable)
+                if (((Updatable)object).update())
                     pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
-                }
-            }
-        }
     }
 
     /*
@@ -73,9 +70,8 @@ public class World implements Model {
     public List<Object3D> getWorldObjectsAsList() {
         ArrayList<Object3D> returnList = new ArrayList<>();
 
-        for(Object3D object : this.worldObjects) {
+        for(Object3D object : this.worldObjects)
             returnList.add(new ProxyObject3D(object));
-        }
 
         return returnList;
     }
