@@ -10,16 +10,9 @@ import java.util.*;
 class Minecart implements Object3D, Updatable {
     private UUID uuid;
 
-    private double x = 1.5;
-    private double y = 2.15;
-    private double z = -10;
+    private double x = 1.5, y = 2.15, z = -10, rotationX, rotationY = 0.5*Math.PI, rotationZ, inZ = 0, outZ = -10;
 
-    private double rotationX = 0;
-    private double rotationY = 0.5*Math.PI;
-    private double rotationZ = 0;
-
-    private String location = "Out";
-
+    private String location;
     private double linearSpeed = 0.1;
 
     public Stack<String> orders;
@@ -27,10 +20,7 @@ class Minecart implements Object3D, Updatable {
     public Minecart() {
         this.uuid = UUID.randomUUID();
         orders = new Stack<String>();
-        orders.add("A0");
-        orders.add("B0");
-        orders.add("C0");
-
+        location = "Out";
     }
 
     /*
@@ -48,20 +38,12 @@ class Minecart implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        if(x == 1.5 && z == 0){
-            location = "In";
-        }
-        if(x == 1.5 && z == -10){
-            location = "Out";
-        }
-        if(location == "In"){
+        if(location == "Out"){
             moveTo(1.5,-10);
         }
-        if(location == "Out"){
+        if(location == "In"){
             moveTo(1.5, 0);
         }
-
-
         return true;
     }
 
@@ -86,6 +68,18 @@ class Minecart implements Object3D, Updatable {
 
         if (Math.abs(z - targetZ) < 2 * linearSpeed)
             z = targetZ;
+    }
+    public void setLocation(String location){
+        this.location = location;
+    }
+
+    public String getLocation(){
+        if(location == "In" && z == inZ)
+            return "minecartIsOnDock";
+        if(location == "Out" && z == outZ)
+            return "minecartIsOnStarting";
+        else
+            return "Moving";
     }
 
     @Override

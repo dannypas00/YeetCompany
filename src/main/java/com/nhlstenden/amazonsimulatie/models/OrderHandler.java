@@ -9,10 +9,13 @@ import java.util.Stack;
 public class OrderHandler implements Model {
 
     private List<Robot> robots;
+    private List<Minecart> minecarts;
     private Pathfinding pathFinder = new Pathfinding();
     private Queue<String> orders = new LinkedList<>();
     World world;
     private final String[] validOrders = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
+
+    private boolean minecartOnDock = false;
 
     public OrderHandler(Model world) {
         this.world = (World) world;
@@ -25,8 +28,22 @@ public class OrderHandler implements Model {
     @Override
     public void update() {
         robots = world.getRobotsAsList();
+        minecarts = world.getMinecartAsList();
+        for (Minecart m : minecarts) {
+            if (orders.isEmpty() || orders == null)
+                m.setLocation("Out");
+            else
+                m.setLocation("In");
+
+            if (m.getLocation() == "minecartIsOnDock")
+                minecartOnDock = true;
+            if (m.getLocation() == "minecartIsOnStarting")
+                minecartOnDock = false;
+            else
+                minecartOnDock = false;
+        }
         for (Robot r : robots) {
-            if (r.getState() == "await") {
+            if (r.getState() == "await" && minecartOnDock == true) {
                 Stack<Node> route = new Stack<>();
                 if (!orders.isEmpty()) {
                     for (Node n : pathFinder.getPathToItem(orders.poll())) {
