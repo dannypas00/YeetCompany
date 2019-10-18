@@ -50,8 +50,8 @@ public class Pathfinding implements Model {
                         addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX(8 + (8 * j));
-                n.setZ((6 * i));
+                n.setX((-6 * j) - 2);
+                n.setZ(8 * i);
             }
         }
         //Starting Point
