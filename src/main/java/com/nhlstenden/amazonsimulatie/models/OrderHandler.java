@@ -1,51 +1,92 @@
 package com.nhlstenden.amazonsimulatie.models;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.beans.PropertyChangeListener;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class OrderHandler implements Model {
-
+    private World world;
     private List<Robot> robots;
     private Pathfinding pathFinder = new Pathfinding();
-    private Queue<String> orders = new LinkedList<>();
-    World world;
-    private final String[] validOrders = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
+
+    private Queue<String> order = new LinkedList<>();
+    private Queue<String> request = new LinkedList<>();
+    private final List<String> validOrders = new ArrayList<>();
+
+    private Rack[] racks = new Rack[15];
+    private HashMap<String, Rack> rackMap = new HashMap<>();
 
     public OrderHandler(Model world) {
         this.world = (World) world;
-        orders.add("dirt");
-        orders.add("glowstone");
-    }
+        validOrders.add("dirt");
+        validOrders.add("glowstone");
+        validOrders.add("tnt");
+        validOrders.add("pig");
+        validOrders.add("cobblestone");
+        validOrders.add("log");
+        validOrders.add("bricks");
+        validOrders.add("skull");
+        validOrders.add("iron");
+        validOrders.add("diamond");
+        validOrders.add("stoneBricks");
+        validOrders.add("gold");
+        validOrders.add("emerald");
+        validOrders.add("slime");
+        validOrders.add("wool");
+        Collections.shuffle(validOrders);
+        fillRacks(validOrders);
 
-    // TODO Add way of inputting orders
+        order = generateNewOrder();
+        request = generateNewOrder();
+    }
 
     @Override
     public void update() {
         robots = world.getRobotsAsList();
         for (Robot r : robots) {
             if (r.getState() == "await") {
+                // Incoming orders
                 Stack<Node> route = new Stack<>();
-                if (!orders.isEmpty()) {
-                    for (Node n : pathFinder.getPathToItem(orders.poll())) {
+                if (!order.isEmpty()) {
+                    String item = order.poll();
+                    for (Node n : pathFinder.getPathToItem(item)) {
                         route.push(n);
                         System.out.println("Added node " + n.getName() + " to route");
                     }
-                    r.goRoute(route);
+                    if (r.goRoute(route, "put")) {
+                        rackMap.get(item).pullItem();
+                    }
+                }
+                else if (!request.isEmpty()) {
+                    String item = request.poll();
+                    for (Node n : pathFinder.getPathToItem(item)) {
+                        route.push(n);
+                    }
+                    if (r.goRoute(route, "pull")) {
+                        rackMap.get(item).putItem();
+                    }
                 }
             }
         }
     }
 
-    public void pushOrder (String order) {
-        for (String o : validOrders) {
-            if (o == order) {
-                this.orders.add(order);
-                return;
-            }
+    private void fillRacks(List<String> items) {
+        for (int i = 0; i < items.size(); i++) {
+            String item = items.get(i);
+            int amount = (int) Math.floor(Math.random() * 6);
+            Rack rack = racks[i] = new Rack(item, amount);
+            rackMap.put(item, rack);
+            System.out.println("Filled rack " + i + " with item " + item);
         }
+    }
+
+    private Queue<String> generateNewOrder() {
+        int size = (int) Math.ceil(Math.random() * 5);
+        Queue<String> order = new LinkedList<>();
+        for (int i = 0; i < size; i++) {
+            order.add(validOrders.get(i));
+        }
+        return order;
     }
 
     @Override

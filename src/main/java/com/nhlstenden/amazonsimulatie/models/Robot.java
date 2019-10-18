@@ -45,7 +45,7 @@ class Robot implements Object3D, Updatable {
         return true;
     }
 
-    public boolean goRoute (Stack<Node> route) {
+    public boolean goRoute (Stack<Node> route, String order) {
         if (this.route == null || this.route.isEmpty()) {
             this.route = route;
             target = route.pop();

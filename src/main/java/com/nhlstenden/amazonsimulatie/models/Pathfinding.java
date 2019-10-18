@@ -14,7 +14,7 @@ import java.util.*;
 public class Pathfinding implements Model {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private Graph graph = new Graph();
-    private String[] items = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
+    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold", "emerald", "slime", "wool"};
     private HashMap<String, Node> itemMap = new HashMap<>();
     private Node[][] nodes = new Node[7][5];
 
@@ -54,6 +54,9 @@ public class Pathfinding implements Model {
                 n.setZ(4 * i);
             }
         }
+
+        nodes[0][1].setZ(0);
+
         //Starting Point
         nodes[0][0] = new Node("0, 0");
         nodes[0][0].addDestination(nodes[0][1], 2);
@@ -80,8 +83,8 @@ public class Pathfinding implements Model {
                     graph.addNode(n);
 
         for (int i = 0; i < items.length; i++) {
-            int rand1 = 4; //(int) Math.ceil(Math.random()*4);
-            int rand2 = i; //(int) Math.floor(Math.random()*6);
+            int rand1 = (int) Math.ceil(Math.random()*4);
+            int rand2 = (int) Math.floor(Math.random()*6);
             Node location = nodes[rand2][rand1];
             System.out.println("Putting item " + items[i] + " down at location " + location.getName());
             itemMap.put(items[i], location);
