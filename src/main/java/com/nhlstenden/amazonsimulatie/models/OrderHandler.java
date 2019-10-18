@@ -89,7 +89,7 @@ public class OrderHandler implements Model {
     private void fillRacks(List<String> items) {
         for (int i = 0; i < items.size(); i++) {
             String item = items.get(i);
-            int amount = (int) Math.floor(Math.random() * 6);
+            int amount = (int) Math.ceil(Math.random() * 6);
             Rack rack = racks[i] = new Rack(item, amount);
             rackMap.put(item, rack);
             System.out.println("Filled rack " + i + " with item " + item);
