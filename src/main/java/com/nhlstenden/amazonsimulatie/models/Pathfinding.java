@@ -62,7 +62,7 @@ public class Pathfinding implements Model {
         nodes[0][0].addDestination(nodes[0][1], 2);
         nodes[0][0].setX(0);
         nodes[0][0].setZ(0);
-      
+
         for (int i = 2; i < 4; i++){
             addDestinationAbove(i, 2, 6);
             addDestinationAbove(i, 4, 6);
@@ -73,6 +73,11 @@ public class Pathfinding implements Model {
         nodes[0][0].addDestination(nodes[0][1], 2);
         nodes[0][0].setX(0);
         nodes[0][0].setZ(0);
+
+        for (int i = 2; i < 4; i++){
+            addDestinationAbove(i, 2, 6);
+            addDestinationAbove(i, 4, 6);
+        }
 
         //Add nodes to graph
         graph = new Graph();
@@ -90,10 +95,6 @@ public class Pathfinding implements Model {
             itemMap.put(items[i], location);
         }
 
-        System.out.print("Path to tnt");
-        for (Node n : getPathToItem("tnt")) {
-            System.out.print("-> | " + n.getName() + " | ");
-        }
         System.out.print("\r\n");
     }
 

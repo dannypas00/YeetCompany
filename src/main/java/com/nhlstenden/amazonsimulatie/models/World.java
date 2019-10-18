@@ -21,6 +21,7 @@ public class World implements Model {
      */
     private List<Object3D> worldObjects;
     private List<Robot> robots = new ArrayList<>();
+    private List<Minecart> minecarts = new ArrayList<>();
 
     /*
      * Dit onderdeel is nodig om veranderingen in het model te kunnen doorgeven aan de controller.
@@ -38,10 +39,11 @@ public class World implements Model {
             this.worldObjects.add(robot);
             this.robots.add(robot);
         }
-
-        Robot robot01 = new Robot();
-
-        this.worldObjects.add(new Minecart());
+        for (int i = 0; i < 1; i++) {
+            Minecart minecart = new Minecart();
+            this.worldObjects.add(minecart);
+            this.minecarts.add(minecart);
+        }
     }
 
     /*
@@ -84,7 +86,7 @@ public class World implements Model {
         return returnList;
     }
 
-    public List<Robot> getRobotsAsList() {
-        return robots;
-    }
+    public List<Robot> getRobotsAsList() { return robots; }
+
+    public List<Minecart> getMinecartAsList() { return minecarts; }
 }

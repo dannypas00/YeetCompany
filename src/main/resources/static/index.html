@@ -118,7 +118,9 @@
                 //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
                 if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
                     //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
+                    console.log("command = " + command.parameters.type);
                     if (command.parameters.type == "robot") {
+                        console.log("help im a robot");
                         var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
                         var cubeMaterials = [
                             new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
