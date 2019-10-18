@@ -1,30 +1,40 @@
 package com.nhlstenden.amazonsimulatie.models;
 
 import java.beans.PropertyChangeListener;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
 public class OrderHandler implements Model {
 
-    private Robot[] robots = new Robot[] {};
+    private List<Robot> robots;
     private Pathfinding pathFinder = new Pathfinding();
-    private Stack<String> Orders = new Stack<>();
-    private Queue<String> orders;
+    private Queue<String> orders = new LinkedList<>();
+    World world;
     private final String[] validOrders = new String[] {"dirt", "glowstone", "tnt", "log", "pig"};
 
-    public OrderHandler() {  }
+    public OrderHandler(Model world) {
+        this.world = (World) world;
+        orders.add("dirt");
+        orders.add("glowstone");
+    }
 
     // TODO Add way of inputting orders
 
     @Override
     public void update() {
+        robots = world.getRobotsAsList();
         for (Robot r : robots) {
             if (r.getState() == "await") {
                 Stack<Node> route = new Stack<>();
-                for (Node n : pathFinder.getPathToItem(orders.remove()))
-                    route.push(n);
-                r.goRoute(route);
+                if (!orders.isEmpty()) {
+                    for (Node n : pathFinder.getPathToItem(orders.poll())) {
+                        route.push(n);
+                        System.out.println("Added node " + n.getName() + " to route");
+                    }
+                    r.goRoute(route);
+                }
             }
         }
     }

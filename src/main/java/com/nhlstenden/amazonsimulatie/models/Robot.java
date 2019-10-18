@@ -13,19 +13,13 @@ class Robot implements Object3D, Updatable {
 
     private String state = "await";
     private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.1, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
-    private boolean rotating = true, moving = true;
-    private Node root, target, A0, A1, A2, A3;
-    private Stack<Node> route;
-    private Pathfinding pathFinder;
+    private long targetTime;
+    private Node target;
+    private Stack<Node> route, breadcrumbs = new Stack<Node>();
 
     public Robot () {
         this.uuid = UUID.randomUUID();
-        route = new Stack<Node>();
-        target = new Node("root");
-        target.setX(0);
-        target.setZ(0);
-        x = target.getX();
-        z = target.getZ();
+        System.out.println("[" + this.getUUID().toString() + "] Robot has been instantiated");
     }
 
     /*
@@ -43,19 +37,20 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        //System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
-        moveTo(target);
-        rotateTo(target);
-        return(true);
+        if (target != null && System.currentTimeMillis() > targetTime) {
+            moveTo(target);
+            rotateTo(target);
+        }
+        return true;
     }
 
     public boolean goRoute (Stack<Node> route) {
-        if (this.route.isEmpty()) {
+        if (this.route == null || this.route.isEmpty()) {
             this.route = route;
+            target = route.pop();
+            breadcrumbs.push(target);
             return true;
-        }
-        else
-            return false;
+        } else return false;
     }
 
     /*Function to rotate the robot towards the target*/
@@ -70,16 +65,18 @@ class Robot implements Object3D, Updatable {
 
     /*Function to move towards the target*/
     public void moveTo(Node targetNode) {
-        if (targetNode.getX() - x < 0)
+        if (targetNode.getX() - x < 0) {
             if (targetNode.getX() < x)
                 x -= linearSpeed;
+        }
         else
             if (targetNode.getX() > x)
                 x += linearSpeed;
 
-        if (targetNode.getZ() - z < 0)
+        if (targetNode.getZ() - z < 0) {
             if (targetNode.getZ() < z)
                 z -= linearSpeed;
+        }
         else
             if (targetNode.getZ() > z)
                 z += linearSpeed;
@@ -91,9 +88,30 @@ class Robot implements Object3D, Updatable {
         if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed)
             z = targetNode.getZ();
 
+        //when the robot is on target
         if ((x == targetNode.getX() && z == targetNode.getZ()))
-            if (!route.isEmpty())
+            //if the route is not empty pop one coordinate into target and add this target to the breadcrumbs
+            if (!route.isEmpty()) {
                 target = route.pop();
+                breadcrumbs.push(target);
+                setState("moving");
+            }
+            //when robot is on destination
+            else{
+                if(state != "returning"){
+                    targetTime = System.currentTimeMillis() + 1000;
+                }
+                if(!breadcrumbs.isEmpty() && target.getName() != "0, 0" ) {
+                    target = breadcrumbs.pop();
+                    setState("returning");
+                }
+                else
+                    setState("await");
+            }
+    }
+
+    private void setState(String state){
+        this.state = state;
     }
 
     @Override

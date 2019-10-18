@@ -50,10 +50,18 @@ public class Pathfinding implements Model {
                         addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX(8 + (8 * j));
-                n.setZ((6 * i));
+                n.setX((-6 * j) - 2);
+                n.setZ(4 * i);
             }
         }
+
+        nodes[0][1].setZ(0);
+
+        //Starting Point
+        nodes[0][0] = new Node("0, 0");
+        nodes[0][0].addDestination(nodes[0][1], 2);
+        nodes[0][0].setX(0);
+        nodes[0][0].setZ(0);
 
         for (int i = 2; i < 4; i++){
             addDestinationAbove(i, 2, 6);
@@ -80,8 +88,9 @@ public class Pathfinding implements Model {
                     graph.addNode(n);
 
         for (int i = 0; i < items.length; i++) {
-            int rand = i; //(int) Math.ceil(Math.random()*4);
-            Node location = nodes[rand][i];
+            int rand1 = 4; //(int) Math.ceil(Math.random()*4);
+            int rand2 = i; //(int) Math.floor(Math.random()*6);
+            Node location = nodes[rand2][rand1];
             System.out.println("Putting item " + items[i] + " down at location " + location.getName());
             itemMap.put(items[i], location);
         }
@@ -100,6 +109,8 @@ public class Pathfinding implements Model {
     private List<Node> getPath(Node node) {
         Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
         List<Node> path = node.getShortestPath();
+        for (Node n : path)
+            System.out.println("Node " + n.getName() + " in path");
         return path;
     }
 
