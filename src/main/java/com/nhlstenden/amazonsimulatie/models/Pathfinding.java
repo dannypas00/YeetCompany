@@ -54,6 +54,9 @@ public class Pathfinding implements Model {
                 n.setZ(4 * i);
             }
         }
+
+        nodes[0][1].setZ(0);
+
         //Starting Point
         nodes[0][0] = new Node("0, 0");
         nodes[0][0].addDestination(nodes[0][1], 2);
