@@ -54,17 +54,22 @@ public class Pathfinding implements Model {
                 n.setZ((6 * i));
             }
         }
+        //Starting Point
+        nodes[0][0] = new Node("0, 0");
+        nodes[0][0].addDestination(nodes[0][1], 2);
+        nodes[0][0].setX(0);
+        nodes[0][0].setZ(0);
+      
+        for (int i = 2; i < 4; i++){
+            addDestinationAbove(i, 2, 6);
+            addDestinationAbove(i, 4, 6);
+        }
 
         //Starting Point
         nodes[0][0] = new Node("0, 0");
         nodes[0][0].addDestination(nodes[0][1], 2);
         nodes[0][0].setX(0);
         nodes[0][0].setZ(0);
-
-        for (int i = 2; i < 4; i++){
-            addDestinationAbove(i, 2, 6);
-            addDestinationAbove(i, 4, 6);
-        }
 
         //Add nodes to graph
         graph = new Graph();
@@ -96,16 +101,14 @@ public class Pathfinding implements Model {
         nodes[row][col].addDestination(nodes[row - 1][col], distance);
     }
 
-    private Stack<Node> getPath(Node node) {
-        Dijkstra.calculateShortestPathFromSource(node);
-        Stack<Node> path = node.getShortestPath();
+    private List<Node> getPath(Node node) {
+        Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
+        List<Node> path = node.getShortestPath();
         return path;
     }
 
-    public Stack<Node> getPathToItem(String item) {
-        System.out.println("Itemmap: " + itemMap.toString());
+    public List<Node> getPathToItem(String item) {
         Node target = itemMap.get(item);
-        //System.out.println("Map for item " + item + ": " + target.getName());
         return getPath(target);
     }
 
