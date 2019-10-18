@@ -38,7 +38,6 @@ class Robot implements Object3D, Updatable {
      */
     @Override
     public boolean update() {
-        System.out.println("x: " + x + " z: " + z + " rotationY :" + rotationY + " rad: " + rad + " deltaX: " + deltaX + " deltaZ: " + deltaZ);
         if (target != null) {
             moveTo(target);
             rotateTo(target);
@@ -47,11 +46,9 @@ class Robot implements Object3D, Updatable {
     }
 
     public boolean goRoute (Stack<Node> route) {
-        System.out.println("Going route");
         if (this.route == null || this.route.isEmpty()) {
             this.route = route;
             target = route.pop();
-            System.out.println("POP! " + target.getName());
             return true;
         } else return false;
     }
@@ -94,7 +91,6 @@ class Robot implements Object3D, Updatable {
         if ((x == targetNode.getX() && z == targetNode.getZ()))
             if (!route.isEmpty()) {
                 target = route.pop();
-                System.out.println("POP! " + target.getName());
             }
     }
 

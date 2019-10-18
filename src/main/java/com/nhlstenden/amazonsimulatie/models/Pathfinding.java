@@ -51,7 +51,7 @@ public class Pathfinding implements Model {
                         break;
                 }
                 n.setX((-6 * j) - 2);
-                n.setZ(8 * i);
+                n.setZ(4 * i);
             }
         }
         //Starting Point

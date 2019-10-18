@@ -38,6 +38,9 @@ public class World implements Model {
             this.worldObjects.add(robot);
             this.robots.add(robot);
         }
+
+        Robot robot01 = new Robot();
+
         this.worldObjects.add(new Minecart());
     }
 
