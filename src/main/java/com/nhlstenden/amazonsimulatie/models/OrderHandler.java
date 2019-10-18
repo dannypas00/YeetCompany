@@ -16,7 +16,9 @@ public class OrderHandler implements Model {
 
     public OrderHandler(Model world) {
         this.world = (World) world;
-        orders.add("tnt");
+        if (robots != null)
+            for (Robot r : robots)
+                orders.add(validOrders[(int) Math.floor(Math.random() * 5)]);
     }
 
     // TODO Add way of inputting orders
