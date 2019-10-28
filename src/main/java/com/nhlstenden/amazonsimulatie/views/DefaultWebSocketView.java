@@ -71,7 +71,7 @@ public class DefaultWebSocketView implements View {
         if (object.getCondition() != null) {
             jsonBody += "," + surroundString("state") + ":" + object.getCondition();
         }
-        System.out.println(jsonBody);
+
         return "{" + jsonBody + "}";
     }
 
