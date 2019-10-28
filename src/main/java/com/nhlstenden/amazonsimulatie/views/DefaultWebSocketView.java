@@ -33,19 +33,20 @@ public class DefaultWebSocketView implements View {
      */
     @Override
     public void update(String event, Object3D data) {
-        try {
-            if(this.sesion.isOpen()) {
-                this.sesion.sendMessage(new TextMessage("{"
-                + surroundString("command") + ": " + surroundString(event) + ","
-                + surroundString("parameters") + ": " + jsonifyObject3D(data)
-              + "}"));
-            }
-            else {
+        synchronized (sesion) {
+            try {
+                if (this.sesion.isOpen()) {
+                    this.sesion.sendMessage(new TextMessage("{"
+                            + surroundString("command") + ": " + surroundString(event) + ","
+                            + surroundString("parameters") + ": " + jsonifyObject3D(data)
+                            + "}"));
+                } else {
+                    this.onClose.execute();
+                }
+
+            } catch (IOException e) {
                 this.onClose.execute();
             }
-            
-        } catch (IOException e) {
-            this.onClose.execute();
         }
     }
 
@@ -59,7 +60,7 @@ public class DefaultWebSocketView implements View {
      * naar de client.
      */
     private String jsonifyObject3D(Object3D object) {
-        String json =
+        /*String json =
         if (object instanceof Robot) {
             object = (Robot) object;
             return "{"
@@ -73,7 +74,7 @@ public class DefaultWebSocketView implements View {
                     + surroundString("rotationZ") + ":" + object.getRotationZ() + ","
                     + surroundString("carrying") + ":" + object.getCarrying()
                     + "}";
-        }
+        }*/
         return  "{" 
                 + surroundString("uuid") + ":" + surroundString(object.getUUID()) + ","
                 + surroundString("type") + ":" + surroundString(object.getType()) + ","
