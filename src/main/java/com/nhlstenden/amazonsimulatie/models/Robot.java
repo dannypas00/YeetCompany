@@ -141,8 +141,10 @@ class Robot implements Object3D, Updatable {
         return this.x;
     }
 
-    public boolean getCarrying() {
-        return this.carrying;
+    @Override
+    public String getCondition() {
+        if (this.carrying) return "carrying";
+        else return null;
     }
 
     @Override
@@ -170,7 +172,5 @@ class Robot implements Object3D, Updatable {
         return this.rotationZ;
     }
 
-    public String getState() {
-        return state;
-    }
+    public String getState() { return state; }
 }

@@ -135,4 +135,8 @@ class Minecart implements Object3D, Updatable {
     public double getRotationZ() {
         return this.rotationZ;
     }
+
+    @Override
+    public String getCondition() { return null; }
+
 }

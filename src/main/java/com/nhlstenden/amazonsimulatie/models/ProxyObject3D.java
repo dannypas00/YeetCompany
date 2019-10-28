@@ -62,5 +62,6 @@ public class ProxyObject3D implements Object3D {
         return this.object.getRotationZ();
     }
 
-
+    @Override
+    public String getCondition() { return null; }
 }
