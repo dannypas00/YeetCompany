@@ -39,8 +39,16 @@ public class OrderHandler implements Model {
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
 
-        order = generateNewOrder();
-        request = generateNewOrder();
+        for (int i = 0; i < 5; i++) {
+            for (String s : generateNewOrder()) {
+                order.add(s);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (String s : generateNewOrder()) {
+                request.add(s);
+            }
+        }
     }
 
     @Override
