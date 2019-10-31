@@ -110,7 +110,7 @@ public class OrderHandler implements Model {
     }
 
     private Queue<String> generateNewOrder() {
-        int size = (int) Math.ceil(Math.random() * 5);
+        int size = (int) Math.ceil(Math.random() * 10);
         Queue<String> order = new LinkedList<>();
         for (int i = 0; i < size; i++) {
             order.add(validOrders.get(i));
