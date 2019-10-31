@@ -50,44 +50,43 @@ class Minecart implements Object3D, Updatable {
         return false;
     }
 
+    /*
+    *  When you give the minecart a target X and Z he will move to this target with given linearSpeed every update.
+    */
     public void moveTo(double targetX, double targetZ) {
         if (targetX - x < 0) {
-            if (targetX < x)
+            if (targetX < x) {
                 x -= linearSpeed;
+            }
         } else
-            if (targetX > x)
+            if (targetX > x) {
                 x += linearSpeed;
+            }
 
         if (targetZ - z < 0) {
-            if (targetZ < z)
+            if (targetZ < z) {
                 z -= linearSpeed;
+            }
         } else
-            if (targetZ > z)
+            if (targetZ > z) {
                 z += linearSpeed;
+            }
 
-        if (Math.abs(x - targetX) < 2 * linearSpeed)
+        if (Math.abs(x - targetX) < 2 * linearSpeed) {
             x = targetX;
+        }
 
-
-        if (Math.abs(z - targetZ) < 2 * linearSpeed)
+        if (Math.abs(z - targetZ) < 2 * linearSpeed) {
             z = targetZ;
-    }
-
-    private void waiting(long seconds){
-        targetTime = System.currentTimeMillis() + (seconds*1000);
+        }
     }
 
     public void setLocation(String location){
         this.location = location;
     }
 
-    public String getLocation(){
-        if(location == "In" && z == inZ)
-            return "minecartIsOnDock";
-        if(location == "Out" && z == outZ)
-            return "minecartIsOnStarting";
-        else
-            return "Moving";
+    public String getLocation() {
+        return location;
     }
 
     @Override
@@ -120,6 +119,10 @@ class Minecart implements Object3D, Updatable {
     public double getZ() {
         return this.z;
     }
+
+    public double getInZ() { return this.inZ;}
+
+    public double getOutZ() { return this.outZ;}
 
     @Override
     public double getRotationX() {
