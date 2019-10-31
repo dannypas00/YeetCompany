@@ -14,19 +14,19 @@ import java.util.*;
 public class Pathfinding implements Model {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private Graph graph = new Graph();
-    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold"};//, "emerald", "slime", "wool"};
+    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond"};//, "stoneBricks", "gold", "emerald", "slime", "wool"};
     private HashMap<String, Node> itemMap = new HashMap<>();
-    private Node[][] nodes = new Node[7][5];
+    private Node[][] nodes = new Node[5][7];
     private List<Node> locations = new ArrayList<Node>();
-    private int[] locationNumbersi = new int[] {1, 2, 3, 4}, locationNumbersj = new int [] {1, 3, 5};
+    private int[] locationNumbersi = new int[] {1, 2, 3, 4, 5}, locationNumbersj = new int [] {1, 1};
 
     public Pathfinding() {
         setupGrid();
     }
 
     private void setupGrid() {
-        for (int i = 1; i < 5; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 1; i < 7; i++) {
+            for (int j = 0; j < 5; j++) {
                 nodes[j][i] = new Node(j + ", " + i);
                 Node n = nodes[j][i];
 
@@ -36,14 +36,12 @@ public class Pathfinding implements Model {
                             addDestinationLeft(j, i, 8);
                         break;
                     case 2:
-                        /* falls through */
-                    case 4:
                         if (i != 1) {
                             addDestinationLeft(j, i, 8);
                             addDestinationAbove(j, i, 6);
                         }
                         break;
-                    case 6:
+                    case 5:
                         if (i != 1) {
                             addDestinationLeft(j, i, 8);
                             addDestinationAbove(j, i, 6);
@@ -53,8 +51,8 @@ public class Pathfinding implements Model {
                         addDestinationAbove(j, i, 6);
                         break;
                 }
-                n.setX((-6 * j) - 2);
-                n.setZ(4 * i);
+                n.setX((-4 * j) - 2);
+                n.setZ(6 * i);
             }
         }
 
@@ -82,7 +80,7 @@ public class Pathfinding implements Model {
             }
         }
 
-        // Add locations for
+        // Add locations
         for (int i : locationNumbersi) {
             for (int j : locationNumbersj) {
                 locations.add(nodes[j][i]);

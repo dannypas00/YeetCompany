@@ -31,8 +31,8 @@ public class OrderHandler implements Model {
         validOrders.add("skull");
         validOrders.add("iron");
         validOrders.add("diamond");
-        validOrders.add("stoneBricks");
-        validOrders.add("gold");
+//        validOrders.add("stoneBricks");
+//        validOrders.add("gold");
 //        validOrders.add("emerald");
 //        validOrders.add("slime");
 //        validOrders.add("wool");

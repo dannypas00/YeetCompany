@@ -1,0 +1,192 @@
+Wavefront OBJ material file
+# Contains 19 materials
+
+newmtl Stone
+# Ns 0
+# Ka 0.0972549 0.0972549 0.0972549
+Kd 0.486275 0.486275 0.486275
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Grass_Block
+# Ns 0
+# Ka 0.109804 0.148235 0.0682353
+Kd 0.54902 0.741176 0.341176
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Dirt
+# Ns 0
+# Ka 0.109804 0.0776471 0.0533333
+Kd 0.54902 0.388235 0.266667
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Oak_Planks
+# Ns 0
+# Ka 0.122353 0.101176 0.0572549
+Kd 0.611765 0.505882 0.286275
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Gravel
+# Ns 0
+# Ka 0.104314 0.0964706 0.0964706
+Kd 0.521569 0.482353 0.482353
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Coal_Ore
+# Ns 0
+# Ka 0.0407843 0.0407843 0.0407843
+Kd 0.203922 0.203922 0.203922
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Oak_Log
+# Ns 0
+# Ka 0.0823529 0.065098 0.04
+Kd 0.411765 0.32549 0.2
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Oak_Leaves
+# Ns 0
+# Ka 0.0870588 0.134902 0.0345098
+Kd 0.435294 0.67451 0.172549
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Grass
+# Ns 0
+# Ka 0.109804 0.148235 0.0682353
+Kd 0.54902 0.741176 0.341176
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Wool
+# Ns 0
+# Ka 0.186667 0.186667 0.186667
+Kd 0.933333 0.933333 0.933333
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Dandelion
+# Ns 0
+# Ka 0.16549 0.173333 0.00392157
+Kd 0.827451 0.866667 0.0196078
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Poppy
+# Ns 0
+# Ka 0.161569 0.0203922 0.00392157
+Kd 0.807843 0.101961 0.0196078
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Rail
+# Ns 0
+# Ka 0.0815686 0.0815686 0.0815686
+Kd 0.407843 0.407843 0.407843
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Snow
+# Ns 0
+# Ka 0.188235 0.196078 0.196078
+Kd 0.941176 0.980392 0.980392
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Fence
+# Ns 0
+# Ka 0.124706 0.101176 0.0611765
+Kd 0.623529 0.505882 0.305882
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Oak_Slab
+# Ns 0
+# Ka 0.124706 0.101176 0.0627451
+Kd 0.623529 0.505882 0.313726
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Cobblestone_Wall
+# Ns 0
+# Ka 0.101961 0.101961 0.101961
+Kd 0.509804 0.509804 0.509804
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Concrete
+# Ns 0
+# Ka 0.162353 0.167059 0.167843
+Kd 0.811765 0.835294 0.839216
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 
+
+newmtl Smooth_Stone
+# Ns 0
+# Ka 0.12549 0.12549 0.12549
+Kd 0.627451 0.627451 0.627451
+Ks 0 0 0
+# # illum 2
+d 1
+Tr 0
+# 

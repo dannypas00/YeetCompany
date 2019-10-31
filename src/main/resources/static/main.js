@@ -30,7 +30,7 @@ window.onload = function () {
 
         window.addEventListener('resize', onWindowResize, false);
 
-        importModel("World", 500, -11, 0, 15);
+        importModel("NewWarehouse", 500, -16, -3, 8, Math.PI);
 
         let light = new THREE.DirectionalLight(0x404040, 1);
         light.position.x = 10;
@@ -70,6 +70,7 @@ window.onload = function () {
         root.position.x = xpos;
         root.position.y = ypos;
         root.position.z = zpos;
+        root.rotation.y = rotation;
         scene.add(root);
     });
     });
