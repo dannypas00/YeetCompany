@@ -30,6 +30,14 @@ public class Node {
     public LinkedList<Node> getShortestPath() {
         return shortestPath;
     }
+
+    public LinkedList<Node> getRealShortestPath() {
+        LinkedList<Node> realShortestPath = new LinkedList<>();
+        realShortestPath.add(this);
+        realShortestPath.addAll(shortestPath);
+        return realShortestPath;
+    }
+
     public Map<Node, Integer> getAdjacentNodes() {
         return adjacentNodes;
     }

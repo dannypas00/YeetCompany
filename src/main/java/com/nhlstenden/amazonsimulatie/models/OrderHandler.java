@@ -40,14 +40,10 @@ public class OrderHandler implements Model {
         fillRacks(validOrders);
 
         for (int i = 0; i < 5; i++) {
-            for (String s : generateNewOrder()) {
-                order.add(s);
-            }
+                order.addAll(generateNewOrder());
         }
         for (int i = 0; i < 5; i++) {
-            for (String s : generateNewOrder()) {
-                request.add(s);
-            }
+                request.addAll(generateNewOrder());
         }
     }
 

@@ -18,7 +18,7 @@ public class Pathfinding implements Model {
     private HashMap<String, Node> itemMap = new HashMap<>();
     private Node[][] nodes = new Node[5][7];
     private List<Node> locations = new ArrayList<Node>();
-    private int[] locationNumbersi = new int[] {1, 2, 3, 4, 5}, locationNumbersj = new int [] {1, 1};
+    private int[] locationNumbersi = new int[] {1, 2, 3, 4, 5}, locationNumbersj = new int [] {1, 3};
 
     public Pathfinding() {
         setupGrid();
@@ -32,27 +32,25 @@ public class Pathfinding implements Model {
 
                 switch (j) {
                     case 0:
-                        if (i != 1)
-                            addDestinationLeft(j, i, 8);
+                        if (i > 1) {
+                            addDestinationRight(j, i, 4);
+                        }
                         break;
                     case 2:
-                        if (i != 1) {
-                            addDestinationLeft(j, i, 8);
-                            addDestinationAbove(j, i, 6);
+                        /* falls through */
+                    case 4:
+                        if (i > 1) {
+                            addDestinationRight(j, i, 4);
                         }
-                        break;
-                    case 5:
-                        if (i != 1) {
-                            addDestinationLeft(j, i, 8);
-                            addDestinationAbove(j, i, 6);
-                        }
-                        break;
+                        /* falls through */
                     default:
-                        addDestinationAbove(j, i, 6);
+                        if (j > 0) {
+                            addDestinationAbove(j, i, 6);
+                        }
                         break;
                 }
-                n.setX((-4 * j) - 2);
-                n.setZ(6 * i);
+                n.setX((-6 * (i - 1)) - 2);
+                n.setZ(4 * j);
             }
         }
 
@@ -98,8 +96,8 @@ public class Pathfinding implements Model {
         System.out.print("\r\n");
     }
 
-    private void addDestinationLeft(int row, int col, int distance) {
-        nodes[row][col].addDestination(nodes[row][col-1], distance);
+    private void addDestinationRight(int row, int col, int distance) {
+        nodes[row][col].addDestination(nodes[row][col - 1], distance);
     }
 
     private void addDestinationAbove(int row, int col, int distance) {
@@ -108,7 +106,7 @@ public class Pathfinding implements Model {
 
     private List<Node> getPath(Node node) {
         Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
-        List<Node> path = node.getShortestPath();
+        List<Node> path = node.getRealShortestPath();
         for (Node n : path) {
             System.out.println("Node " + n.getName() + " in path");
         }
