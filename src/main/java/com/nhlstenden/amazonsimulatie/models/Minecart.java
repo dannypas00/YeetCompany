@@ -50,32 +50,40 @@ class Minecart implements Object3D, Updatable {
         return false;
     }
 
+    /*
+    *  When you give the minecart a target X and Z he will move to this target with given linearSpeed every update.
+    */
     public void moveTo(double targetX, double targetZ) {
         if (targetX - x < 0) {
-            if (targetX < x)
+            if (targetX < x) {
                 x -= linearSpeed;
+            }
         } else
-            if (targetX > x)
+            if (targetX > x) {
                 x += linearSpeed;
+            }
 
         if (targetZ - z < 0) {
-            if (targetZ < z)
+            if (targetZ < z) {
                 z -= linearSpeed;
+            }
         } else
-            if (targetZ > z)
+            if (targetZ > z) {
                 z += linearSpeed;
+            }
 
-        if (Math.abs(x - targetX) < 2 * linearSpeed)
+        if (Math.abs(x - targetX) < 2 * linearSpeed) {
             x = targetX;
+        }
 
-
-        if (Math.abs(z - targetZ) < 2 * linearSpeed)
+        if (Math.abs(z - targetZ) < 2 * linearSpeed) {
             z = targetZ;
+        }
     }
 
-    private void waiting(long seconds){
-        targetTime = System.currentTimeMillis() + (seconds*1000);
-    }
+    //private void waiting(long seconds){
+    //   targetTime = System.currentTimeMillis() + (seconds*1000);
+    //}
 
     public void setLocation(String location){
         this.location = location;

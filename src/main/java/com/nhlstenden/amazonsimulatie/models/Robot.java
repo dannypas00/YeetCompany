@@ -45,6 +45,10 @@ class Robot implements Object3D, Updatable {
         } else return false;
     }
 
+    /*
+     * Makes the robot move to the nodes in the stack "route" and fill a stack with breadcrumbs to find his way back.
+     * He gets this stack from the Orderhandler class
+    */
     public boolean goRoute (Stack<Node> route, String order) {
         if (this.route == null || this.route.isEmpty()) {
             this.route = route;
@@ -68,51 +72,52 @@ class Robot implements Object3D, Updatable {
     /*Function to move towards the target*/
     public void moveTo(Node targetNode) {
         if (targetNode.getX() - x < 0) {
-            if (targetNode.getX() < x)
+            if (targetNode.getX() < x) {
                 x -= linearSpeed;
-        }
-        else
-            if (targetNode.getX() > x)
+            }
+        } else
+            if (targetNode.getX() > x) {
                 x += linearSpeed;
+            }
 
         if (targetNode.getZ() - z < 0) {
-            if (targetNode.getZ() < z)
+            if (targetNode.getZ() < z) {
                 z -= linearSpeed;
-        }
-        else
-            if (targetNode.getZ() > z)
+            }
+        } else
+            if (targetNode.getZ() > z) {
                 z += linearSpeed;
+            }
 
-        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed)
+        if (Math.abs(x - targetNode.getX()) < 2 * linearSpeed) {
             x = targetNode.getX();
+        }
 
 
-        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed)
+        if (Math.abs(z - targetNode.getZ()) < 2 * linearSpeed) {
             z = targetNode.getZ();
+        }
 
-        //when the robot is on target
-        if ((x == targetNode.getX() && z == targetNode.getZ()))
-            //if the route is not empty pop one coordinate into target and add this target to the breadcrumbs
+        if ((x == targetNode.getX() && z == targetNode.getZ())) {
             if (!route.isEmpty()) {
                 target = route.pop();
                 breadcrumbs.push(target);
                 setState("moving");
-            }
-            //when robot is on destination
-            else{
-                if(state != "returning"){
+            } else {
+                if (state != "returning") {
                     targetTime = System.currentTimeMillis() + 1000;
                 }
-                if(!breadcrumbs.isEmpty() && target.getName() != "0, 0" ) {
+                if (!breadcrumbs.isEmpty() && target.getName() != "0, 0") {
                     target = breadcrumbs.pop();
                     setState("returning");
-                }
-                else
+                } else {
                     setState("await");
+                }
             }
+        }
     }
 
-    private void setState(String state){
+    private void setState(String state) {
         this.state = state;
     }
 
@@ -172,5 +177,7 @@ class Robot implements Object3D, Updatable {
         return this.rotationZ;
     }
 
-    public String getState() { return state; }
+    public String getState() {
+        return state;
+    }
 }
