@@ -33,14 +33,15 @@ public class OrderHandler implements Model {
         validOrders.add("diamond");
         validOrders.add("stoneBricks");
         validOrders.add("gold");
-        validOrders.add("emerald");
-        validOrders.add("slime");
-        validOrders.add("wool");
+//        validOrders.add("emerald");
+//        validOrders.add("slime");
+//        validOrders.add("wool");
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
 
         //order = generateNewOrder();
         //request = generateNewOrder();
+
     }
 
     @Override
@@ -75,26 +76,6 @@ public class OrderHandler implements Model {
                     minecartOnDock = false;
                 }
             }
-
-
-
-
-
-
-            /*if ((order.isEmpty() || order == null) && minecartOnDock != false)
-                m.setLocation("Out");
-            else if (!order.isEmpty() && minecartOnDock != false)
-                m.setLocation("In");
-
-            if (m.getLocation() == "minecartIsOnDock")
-                minecartOnDock = true;
-            else if (m.getLocation() == "minecartIsOnStarting")
-                minecartOnDock = false;
-                order = generateNewOrder();
-                request = generateNewOrder();
-                m.setLocation("In");
-*/
-
         }
         for (Robot r : robots) {
             if (r.getState() == "await" && minecartOnDock == true) {
