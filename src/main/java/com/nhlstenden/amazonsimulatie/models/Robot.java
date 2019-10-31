@@ -12,7 +12,7 @@ class Robot implements Object3D, Updatable {
     private UUID uuid;
 
     private String state = "await";
-    private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.125, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    private double x, y, z = 1, rotationX, rotationY, rotationZ, linearSpeed = 0.125, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
     private long targetTime;
     private Node target;
     private Stack<Node> route, breadcrumbs = new Stack<Node>();

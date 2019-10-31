@@ -34,7 +34,7 @@ public class World implements Model {
      */
     public World() {
         this.worldObjects = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 3; i++) {
             Robot robot = new Robot();
             this.worldObjects.add(robot);
             this.robots.add(robot);

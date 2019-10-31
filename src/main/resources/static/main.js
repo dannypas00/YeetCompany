@@ -9,9 +9,7 @@ function parseCommand(input = "") {
 let socket;
 
 window.onload = function () {
-    let camera, scene, renderer, cameraControls;
-
-    let worldObjects = {};
+    let camera, scene, renderer, cameraControls, sceneObject, worldObjects = {};
 
     function init() {
         camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 1000);
@@ -31,6 +29,7 @@ window.onload = function () {
         window.addEventListener('resize', onWindowResize, false);
 
         importModel("NewWarehouse", 500, -16, -3, 8, Math.PI);
+        scene.add(sceneObject);
 
         let light = new THREE.DirectionalLight(0x404040, 1);
         light.position.x = 10;
@@ -62,18 +61,23 @@ window.onload = function () {
     function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0) {
         const objLoader = new OBJLoader2();
         const mtlLoader = new MTLLoader();
+        sceneObject = null;
         mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
             let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-        objLoader.addMaterials(materials);
-        objLoader.load('models/' + name + '.obj', (root) => {
-            root.scale.set(size, size, size);
-        root.position.x = xpos;
-        root.position.y = ypos;
-        root.position.z = zpos;
-        root.rotation.y = rotation;
-        scene.add(root);
-    });
-    });
+            objLoader.addMaterials(materials);
+            objLoader.load('models/' + name + '.obj', (root) => {
+                root.scale.set(size, size, size);
+                root.position.x = xpos;
+                root.position.y = ypos;
+                root.position.z = zpos;
+                root.rotation.y = rotation;
+                sceneObject = root;
+            });
+        });
+    }
+
+    function onLoad(root) {
+
     }
 
     function onWindowResize() {
@@ -103,30 +107,17 @@ window.onload = function () {
             //dan wordt het 3D model eerst aangemaakt in de 3D wereld.
             if (Object.keys(worldObjects).indexOf(command.parameters.uuid) < 0) {
                 //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
-                console.log("command = " + command.parameters.type);
                 if (command.parameters.type == "robot") {
-                    console.log("help im a robot");
-                    var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                    var cubeMaterials = [
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                    ];
-                    var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                    var robot = new THREE.Mesh(geometry, material);
-                    robot.position.y = 2.15;
+                    const robot = importModel("Yeeter", 1, 0, 5);
 
                     var group = new THREE.Group();
-                    group.add(robot);
+                    group = sceneObject;
                     scene.add(group);
                     worldObjects[command.parameters.uuid] = group;
                 }
                 if (command.parameters.type == "minecart") {
-                    var geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
-                    var cubeMaterials = [
+                    const geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
+                    const cubeMaterials = [
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //LEFT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //RIGHT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecarttop.png"), side: THREE.DoubleSide }), //TOP
@@ -134,11 +125,11 @@ window.onload = function () {
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //FRONT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //BACK
                     ];
-                    var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                    var minecart = new THREE.Mesh(geometry, material);
+                    const material = new THREE.MeshFaceMaterial(cubeMaterials);
+                    const minecart = new THREE.Mesh(geometry, material);
                     minecart.position.y = 0.15;
 
-                    var group = new THREE.Group();
+                    const group = new THREE.Group();
                     group.add(minecart);
 
                     scene.add(group);
@@ -148,7 +139,7 @@ window.onload = function () {
             /*
              * Deze code wordt elke update uitgevoerd. Het update alle positiegegevens van het 3D object.
              */
-            var object = worldObjects[command.parameters.uuid];
+            const object = worldObjects[command.parameters.uuid];
             object.position.x = command.parameters.x;
             object.position.y = command.parameters.y;
             object.position.z = command.parameters.z;

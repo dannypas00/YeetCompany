@@ -64,10 +64,7 @@ public class DefaultWebSocketView implements View {
                 + surroundString("type") + ":" + surroundString(object.getType()) + ","
                 + surroundString("x") + ":" + object.getX() + ","
                 + surroundString("y") + ":" + object.getY() + ","
-                + surroundString("z") + ":" + object.getZ() + ","
-                + surroundString("rotationX") + ":" + object.getRotationX() + ","
-                + surroundString("rotationY") + ":" + object.getRotationY() + ","
-                + surroundString("rotationZ") + ":" + object.getRotationZ();
+                + surroundString("rotationY") + ":" + object.getRotationY(); //Position Z and Rotation X and Z removed because of obsolescence
         if (object.getCondition() != null) {
             jsonBody += "," + surroundString("state") + ":" + object.getCondition();
         }
