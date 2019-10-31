@@ -1,32 +1,22 @@
 package com.nhlstenden.amazonsimulatie.test;
 
 import com.nhlstenden.amazonsimulatie.models.*;
-import com.nhlstenden.amazonsimulatie.views.DefaultWebSocketView;
 
 import org.testng.annotations.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class PathfindingTests {
     @Test
-    public void testPathfinding() throws Exception {
+    public void PathfindingTests() throws Exception {
         Pathfinding pathfinder = new Pathfinding();
+        Node[][] nodes = pathfinder.getNodes();
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.addAll(Arrays.asList(new Node[]{nodes[4][6], nodes[3][6], nodes[2][6], nodes[1][6], nodes[0][6], nodes[0][5], nodes[0][4], nodes[0][3], nodes[0][2], nodes[0][1], nodes[0][0]}));
 
-        pathfinder.getPathToItem("skull");
+        assertThat((List<Node>) pathfinder.getPath(nodes[4][6]), is(expectedPath));
     }
 }

@@ -104,7 +104,7 @@ public class Pathfinding implements Model {
         nodes[row][col].addDestination(nodes[row - 1][col], distance);
     }
 
-    private List<Node> getPath(Node node) {
+    public List<Node> getPath(Node node) {
         Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
         List<Node> path = node.getRealShortestPath();
         for (Node n : path) {
@@ -131,5 +131,9 @@ public class Pathfinding implements Model {
     @Override
     public List<Object3D> getWorldObjectsAsList() {
         return null;
+    }
+
+    public Node[][] getNodes() {
+        return nodes;
     }
 }
