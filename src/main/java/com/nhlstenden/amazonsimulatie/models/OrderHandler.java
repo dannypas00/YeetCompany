@@ -39,8 +39,8 @@ public class OrderHandler implements Model {
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
 
-        order = generateNewOrder();
-        request = generateNewOrder();
+        //order = generateNewOrder();
+        //request = generateNewOrder();
     }
 
     @Override
@@ -48,17 +48,53 @@ public class OrderHandler implements Model {
         robots = world.getRobotsAsList();
         minecarts = world.getMinecartAsList();
         for (Minecart m : minecarts) {
-            if (order.isEmpty() || order == null)
+            if (order.isEmpty() || order == null) {
+                if (m.getInZ() == m.getZ()) {
+                    m.setLocation("Out");
+                }
+                if (m.getOutZ() == m.getZ()) {
+                    m.setLocation("OnStartingDock");
+                    order = generateNewOrder();
+                    request = generateNewOrder();
+                }
+                else {
+                    m.setLocation("Out");
+                }
+                minecartOnDock = false;
+            }
+            else {
+                if (m.getInZ() == m.getZ()){
+                    m.setLocation("OnLoadingDock");
+                    minecartOnDock = true;
+                }
+                else if (m.getOutZ() == m.getZ()) {
+                    m.setLocation("In");
+                    minecartOnDock = false;
+                }
+                else {
+                    minecartOnDock = false;
+                }
+            }
+
+
+
+
+
+
+            /*if ((order.isEmpty() || order == null) && minecartOnDock != false)
                 m.setLocation("Out");
-            else
+            else if (!order.isEmpty() && minecartOnDock != false)
                 m.setLocation("In");
 
             if (m.getLocation() == "minecartIsOnDock")
                 minecartOnDock = true;
             else if (m.getLocation() == "minecartIsOnStarting")
                 minecartOnDock = false;
-            else
-                minecartOnDock = false;
+                order = generateNewOrder();
+                request = generateNewOrder();
+                m.setLocation("In");
+*/
+
         }
         for (Robot r : robots) {
             if (r.getState() == "await" && minecartOnDock == true) {

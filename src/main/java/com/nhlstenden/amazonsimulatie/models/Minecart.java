@@ -81,21 +81,12 @@ class Minecart implements Object3D, Updatable {
         }
     }
 
-    //private void waiting(long seconds){
-    //   targetTime = System.currentTimeMillis() + (seconds*1000);
-    //}
-
     public void setLocation(String location){
         this.location = location;
     }
 
-    public String getLocation(){
-        if(location == "In" && z == inZ)
-            return "minecartIsOnDock";
-        if(location == "Out" && z == outZ)
-            return "minecartIsOnStarting";
-        else
-            return "Moving";
+    public String getLocation() {
+        return location;
     }
 
     @Override
@@ -128,6 +119,10 @@ class Minecart implements Object3D, Updatable {
     public double getZ() {
         return this.z;
     }
+
+    public double getInZ() { return this.inZ;}
+
+    public double getOutZ() { return this.outZ;}
 
     @Override
     public double getRotationX() {
