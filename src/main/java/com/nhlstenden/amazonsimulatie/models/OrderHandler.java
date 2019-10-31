@@ -33,14 +33,22 @@ public class OrderHandler implements Model {
         validOrders.add("diamond");
         validOrders.add("stoneBricks");
         validOrders.add("gold");
-        validOrders.add("emerald");
-        validOrders.add("slime");
-        validOrders.add("wool");
+//        validOrders.add("emerald");
+//        validOrders.add("slime");
+//        validOrders.add("wool");
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
 
-        order = generateNewOrder();
-        request = generateNewOrder();
+        for (int i = 0; i < 5; i++) {
+            for (String s : generateNewOrder()) {
+                order.add(s);
+            }
+        }
+        for (int i = 0; i < 5; i++) {
+            for (String s : generateNewOrder()) {
+                request.add(s);
+            }
+        }
     }
 
     @Override

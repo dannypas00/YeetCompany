@@ -14,9 +14,11 @@ import java.util.*;
 public class Pathfinding implements Model {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private Graph graph = new Graph();
-    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold", "emerald", "slime", "wool"};
+    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold"};//, "emerald", "slime", "wool"};
     private HashMap<String, Node> itemMap = new HashMap<>();
     private Node[][] nodes = new Node[7][5];
+    private List<Node> locations = new ArrayList<Node>();
+    private int[] locationNumbersi = new int[] {1, 2, 3, 4}, locationNumbersj = new int [] {1, 3, 5};
 
     public Pathfinding() {
         setupGrid();
@@ -34,6 +36,7 @@ public class Pathfinding implements Model {
                             addDestinationLeft(j, i, 8);
                         break;
                     case 2:
+                        /* falls through */
                     case 4:
                         if (i != 1) {
                             addDestinationLeft(j, i, 8);
@@ -63,18 +66,7 @@ public class Pathfinding implements Model {
         nodes[0][0].setX(0);
         nodes[0][0].setZ(0);
 
-        for (int i = 2; i < 4; i++){
-            addDestinationAbove(i, 2, 6);
-            addDestinationAbove(i, 4, 6);
-        }
-
-        //Starting Point
-        nodes[0][0] = new Node("0, 0");
-        nodes[0][0].addDestination(nodes[0][1], 2);
-        nodes[0][0].setX(0);
-        nodes[0][0].setZ(0);
-
-        for (int i = 2; i < 4; i++){
+        for (int i = 2; i < 4; i++) {
             addDestinationAbove(i, 2, 6);
             addDestinationAbove(i, 4, 6);
         }
@@ -82,16 +74,26 @@ public class Pathfinding implements Model {
         //Add nodes to graph
         graph = new Graph();
 
-        for (Node[] a : nodes)
-            for (Node n : a)
-                if (n != null)
+        for (Node[] a : nodes) {
+            for (Node n : a) {
+                if (n != null) {
                     graph.addNode(n);
+                }
+            }
+        }
 
+        // Add locations for
+        for (int i : locationNumbersi) {
+            for (int j : locationNumbersj) {
+                locations.add(nodes[j][i]);
+            }
+        }
+
+        Collections.shuffle(locations);
         for (int i = 0; i < items.length; i++) {
-            int rand1 = (int) Math.ceil(Math.random()*4);
-            int rand2 = (int) Math.floor(Math.random()*6);
-            Node location = nodes[rand2][rand1];
-            System.out.println("Putting item " + items[i] + " down at location " + location.getName());
+            Node location = locations.get(i);
+            System.out.print("Putting item " + items[i]);
+            System.out.print(" down at location " + location.getName() + "\r\n");
             itemMap.put(items[i], location);
         }
 
@@ -109,8 +111,9 @@ public class Pathfinding implements Model {
     private List<Node> getPath(Node node) {
         Dijkstra.calculateShortestPathFromSource(nodes[0][0]);
         List<Node> path = node.getShortestPath();
-        for (Node n : path)
+        for (Node n : path) {
             System.out.println("Node " + n.getName() + " in path");
+        }
         return path;
     }
 
