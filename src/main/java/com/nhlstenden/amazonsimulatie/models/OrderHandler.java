@@ -33,9 +33,9 @@ public class OrderHandler implements Model {
         validOrders.add("diamond");
         validOrders.add("stoneBricks");
         validOrders.add("gold");
-        validOrders.add("emerald");
-        validOrders.add("slime");
-        validOrders.add("wool");
+//        validOrders.add("emerald");
+//        validOrders.add("slime");
+//        validOrders.add("wool");
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
 

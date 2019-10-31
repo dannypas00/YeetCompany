@@ -14,10 +14,11 @@ import java.util.*;
 public class Pathfinding implements Model {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private Graph graph = new Graph();
-    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold", "emerald", "slime", "wool"};
+    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond", "stoneBricks", "gold"};//, "emerald", "slime", "wool"};
     private HashMap<String, Node> itemMap = new HashMap<>();
     private Node[][] nodes = new Node[7][5];
     private List<Node> locations = new ArrayList<Node>();
+    private int[] locationNumbersi = new int[] {1, 2, 3, 4}, locationNumbersj = new int [] {1, 3, 5};
 
     public Pathfinding() {
         setupGrid();
@@ -35,6 +36,7 @@ public class Pathfinding implements Model {
                             addDestinationLeft(j, i, 8);
                         break;
                     case 2:
+                        /* falls through */
                     case 4:
                         if (i != 1) {
                             addDestinationLeft(j, i, 8);
@@ -80,8 +82,9 @@ public class Pathfinding implements Model {
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 1; j < 7; j += 2) {
+        // Add locations for
+        for (int i : locationNumbersi) {
+            for (int j : locationNumbersj) {
                 locations.add(nodes[j][i]);
             }
         }
