@@ -66,21 +66,24 @@ window.onload = function () {
      * @param zpos the z position to import the model at.
      * @param rotation the y rotation to import the model at.
      */
-    function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0) {
+    async function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0) {
         const objLoader = new OBJLoader2();
         const mtlLoader = new MTLLoader();
-        mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
-            let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-            objLoader.addMaterials(materials);
-            objLoader.load('models/' + name + '.obj', (root) => {
-                root.scale.set(size, size, size);
-                root.position.x = xpos;
-                root.position.y = ypos;
-                root.position.z = zpos;
-                root.rotation.y = rotation;
-                scene.add(root);
+
+            mtlLoader.load('models/' + name + '.mtl', async (mtlParseResult) => {
+                await new Promise(resolve => {
+                    let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+                    objLoader.addMaterials(materials);
+                    objLoader.load('models/' + name + '.obj', async (root) => {
+                        root.scale.set(size, size, size);
+                        root.position.x = xpos;
+                        root.position.y = ypos;
+                        root.position.z = zpos;
+                        root.rotation.y = rotation;
+                        scene.add(root);
+                    });
+                });
             });
-        });
     }
 
     /**

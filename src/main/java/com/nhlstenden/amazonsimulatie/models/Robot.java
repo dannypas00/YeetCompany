@@ -61,12 +61,19 @@ class Robot implements Object3D, Updatable {
 
     /*Function to rotate the robot towards the target*/
     private void rotateTo(Node targetNode) {
+        int targetSign = 1;
+        if (targetNode.getX() != x) {
+            targetSign = (int) Math.signum(targetNode.getX());
+        }
+        if (targetNode.getZ() != z) {
+            targetSign = (int) Math.signum(targetNode.getZ());
+        }
         deltaX = x - targetNode.getX();
         deltaZ = z - targetNode.getZ();
         rad = Math.atan2(deltaZ, deltaX);
         if(rad < 0)
             rad += 2*Math.PI;
-        rotationY = rad + 0.5*Math.PI;
+        rotationY = (rad - 0.5*Math.PI) * targetSign;
     }
 
     /*Function to move towards the target*/
@@ -105,6 +112,7 @@ class Robot implements Object3D, Updatable {
                 setState("moving");
             } else {
                 if (state != "returning") {
+                    rotateTo(targetNode);
                     targetTime = System.currentTimeMillis() + 1000;
                 }
                 if (!breadcrumbs.isEmpty() && target.getName() != "0, 0") {
