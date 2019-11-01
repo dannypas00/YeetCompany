@@ -105,7 +105,7 @@ window.onload = function () {
                 //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
                 console.log("command = " + command.parameters.type);
                 if (command.parameters.type == "robot") {
-                    console.log("help im a robot");
+                    const group = new THREE.Group();
                     var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
                     var cubeMaterials = [
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
@@ -118,8 +118,6 @@ window.onload = function () {
                     var material = new THREE.MeshFaceMaterial(cubeMaterials);
                     var robot = new THREE.Mesh(geometry, material);
                     robot.position.y = 2.15;
-
-                    var group = new THREE.Group();
                     group.add(robot);
                     scene.add(group);
                     worldObjects[command.parameters.uuid] = group;
@@ -144,17 +142,55 @@ window.onload = function () {
                     scene.add(group);
                     worldObjects[command.parameters.uuid] = group;
                 }
+                if (command.parameters.type == "order") {
+                    var geometry = new THREE.BoxGeometry(1, 1, 1);
+                    var cubeMaterials = [
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/west.png"), side: THREE.DoubleSide }), //LEFT
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/east.png"), side: THREE.DoubleSide }), //RIGHT
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/top.png"), side: THREE.DoubleSide }), //TOP
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/south.png"), side: THREE.DoubleSide }), //FRONT
+                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/Slime/north.png"), side: THREE.DoubleSide }), //BACK
+                    ];
+                    var material = new THREE.MeshFaceMaterial(cubeMaterials);
+                    var order = new THREE.Mesh(geometry, material);
+                    order.position.y = 2;
+                    order.position.x = 0;
+                    order.position.z = 0;
+
+                    const group = new THREE.Group();
+                    group.add(order);
+
+                    scene.add(group);
+                    worldObjects[command.parameters.uuid] = group;
+                }
             }
             /*
              * Deze code wordt elke update uitgevoerd. Het update alle positiegegevens van het 3D object.
              */
-            var object = worldObjects[command.parameters.uuid];
+            const object = worldObjects[command.parameters.uuid];
             object.position.x = command.parameters.x;
             object.position.y = command.parameters.y;
             object.position.z = command.parameters.z;
             object.rotation.x = command.parameters.rotationX;
             object.rotation.y = command.parameters.rotationY;
             object.rotation.z = command.parameters.rotationZ;
+            if (command.parameters.state != "null" && command.parameters.state != undefined) {
+                const item = command.parameters.state;
+                const geometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+                const cubeMaterials = [
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/north.png"), side: THREE.DoubleSide }), //LEFT
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/south.png"), side: THREE.DoubleSide }), //RIGHT
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/top.png"), side: THREE.DoubleSide }), //TOP
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/west.png"), side: THREE.DoubleSide }), //FRONT
+                    new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/Objects/"  + item + "/east.png"), side: THREE.DoubleSide }), //BACK
+                ];
+                const material = new THREE.MeshFaceMaterial(cubeMaterials);
+                const order = new THREE.Mesh(geometry, material);
+                order.position.y = 3.45
+                object.add(order);
+            }
         }
     }
     init();

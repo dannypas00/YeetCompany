@@ -60,19 +60,19 @@ public class DefaultWebSocketView implements View {
      * naar de client.
      */
     private String jsonifyObject3D(Object3D object) {
-        String jsonBody = surroundString("uuid") + ":" + surroundString(object.getUUID()) + ","
+        String condition = (object.getCondition() == null) ? "null" : object.getCondition();
+        String jsonBody = "{"
+                + surroundString("uuid") + ":" + surroundString(object.getUUID()) + ","
                 + surroundString("type") + ":" + surroundString(object.getType()) + ","
                 + surroundString("x") + ":" + object.getX() + ","
                 + surroundString("y") + ":" + object.getY() + ","
                 + surroundString("z") + ":" + object.getZ() + ","
                 + surroundString("rotationX") + ":" + object.getRotationX() + ","
                 + surroundString("rotationY") + ":" + object.getRotationY() + ","
-                + surroundString("rotationZ") + ":" + object.getRotationZ();
-        if (object.getCondition() != null) {
-            jsonBody += "," + surroundString("state") + ":" + object.getCondition();
-        }
-
-        return "{" + jsonBody + "}";
+                + surroundString("rotationZ") + ":" + object.getRotationZ() + ","
+                + surroundString("state") + ":" + condition
+                + "}";
+        return jsonBody;
     }
 
     private String surroundString(String s) {

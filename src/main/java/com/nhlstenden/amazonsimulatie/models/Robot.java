@@ -12,7 +12,7 @@ class Robot implements Object3D, Updatable {
     private UUID uuid;
 
     /** String to save the robots state */
-    private String state = "await";
+    private String state = "await", item = "null", order;
     private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.125, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
     /** long to help to time the waiting function from the robot */
     private long targetTime;
@@ -46,6 +46,16 @@ class Robot implements Object3D, Updatable {
         if (target != null && System.currentTimeMillis() > targetTime) {
             moveTo(target);
             rotateTo(target);
+            if (state == "moving" && order == "put") {
+                carrying = true;
+            }
+            else if (state == "returning" && order == "pull") {
+                carrying = true;
+            }
+            else {
+                carrying = false;
+            }
+            System.out.println("Order: " + order + " State: " + state + " Carrying: " + carrying);
             return true;
         } else return false;
     }
@@ -55,11 +65,14 @@ class Robot implements Object3D, Updatable {
      * He gets this stack from the Orderhandler class
     */
     public boolean goRoute (Stack<Node> route, String order) {
+        this.order = order;
         if (this.route == null || this.route.isEmpty()) {
             this.route = route;
             target = route.pop();
             breadcrumbs.push(target);
-            carrying = carrying && (order == "put" && state == "moving" || order == "pull" && state == "returning");
+
+
+            //carrying = ((order == "put" && state == "moving") || (order == "pull" && state == "returning"));
             return true;
         } else return false;
     }
@@ -116,6 +129,7 @@ class Robot implements Object3D, Updatable {
                 target = route.pop();
                 breadcrumbs.push(target);
                 setState("moving");
+                System.out.println("Setting state to: " + state);
             } else {
                 if (state != "returning") {
                     targetTime = System.currentTimeMillis() + 1000;
@@ -123,8 +137,10 @@ class Robot implements Object3D, Updatable {
                 if (!breadcrumbs.isEmpty() && target.getName() != "0, 0") {
                     target = breadcrumbs.pop();
                     setState("returning");
+                    System.out.println("Setting state to: " + state);
                 } else {
                     setState("await");
+                    System.out.println("Setting state to: " + state);
                 }
             }
         }
@@ -134,8 +150,9 @@ class Robot implements Object3D, Updatable {
         this.state = state;
     }
 
-    private void setCarrying(boolean carrying) {
-        this.carrying = carrying;
+    public void setItem(String item) {
+        System.out.println("Now carrying " + item);
+        this.item = item;
     }
 
     @Override
@@ -157,12 +174,6 @@ class Robot implements Object3D, Updatable {
     @Override
     public double getX() {
         return this.x;
-    }
-
-    @Override
-    public String getCondition() {
-        if (this.carrying) return "carrying";
-        else return null;
     }
 
     @Override
@@ -192,5 +203,10 @@ class Robot implements Object3D, Updatable {
 
     public String getState() {
         return state;
+    }
+
+    @Override
+    public String getCondition() {
+        return (carrying) ? item : "null";
     }
 }

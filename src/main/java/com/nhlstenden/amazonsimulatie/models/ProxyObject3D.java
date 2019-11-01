@@ -63,5 +63,5 @@ public class ProxyObject3D implements Object3D {
     }
 
     @Override
-    public String getCondition() { return null; }
+    public String getCondition() { return this.object.getCondition(); }
 }

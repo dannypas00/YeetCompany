@@ -32,7 +32,7 @@ public class OrderHandler implements Model {
         validOrders.add("dirt");
         validOrders.add("glowstone");
         validOrders.add("tnt");
-        validOrders.add("pig");
+        validOrders.add("slime");
         validOrders.add("cobblestone");
         validOrders.add("log");
         validOrders.add("bricks");
@@ -53,7 +53,7 @@ public class OrderHandler implements Model {
         robots = world.getRobotsAsList();
         minecarts = world.getMinecartAsList();
         for (Minecart m : minecarts) {
-            if (order.isEmpty() && request.isEmpty() || order == null) {
+            if ((order.isEmpty() && request.isEmpty()) || order == null || request == null) {
                 if (m.getInZ() == m.getZ()) {
                     m.setLocation("Out");
                 }
@@ -86,6 +86,7 @@ public class OrderHandler implements Model {
                 Stack<Node> route = new Stack<>();
                 if (!order.isEmpty()) {
                     String item = order.poll();
+                    r.setItem(item);
                     for (Node n : pathFinder.getPathToItem(item)) {
                         route.push(n);
                         System.out.println("Added node " + n.getName() + " to route");
@@ -126,7 +127,7 @@ public class OrderHandler implements Model {
      * @return
      */
     private Queue<String> generateNewOrder() {
-        int size = (int) Math.ceil(Math.random() * 10);
+        int size = (int) Math.ceil(Math.random() * 5);
         Queue<String> order = new LinkedList<>();
         for (int i = 0; i < size; i++) {
             order.add(validOrders.get(i));
