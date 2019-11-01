@@ -22,7 +22,7 @@ window.onload = function () {
         cameraControls.update();
         scene = new THREE.Scene();
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight + 5);
         renderer.shadowMap.enabled = true;
@@ -31,6 +31,9 @@ window.onload = function () {
         window.addEventListener('resize', onWindowResize, false);
 
         importModel("NewWarehouse", 500, -16, -3, 8, Math.PI);
+        // var yeeterGroup = new THREE.Group();
+        // importModelDynamic("Yeeter", 1, yeeterGroup);
+        // scene.add(yeeterGroup);
 
         let light = new THREE.DirectionalLight(0x404040, 1);
         light.position.x = 10;
@@ -54,12 +57,16 @@ window.onload = function () {
         scene.background = skybox;
     }
 
-    /*
-    * Import a obj model with an mtl texturemap.
-    * Make sure the obj and mtl have the same name and are located in the "src/main/resource/static/models" folder.
-    * Parameters: name, size, x, y, z, rotation
-    */
-    function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0, group) {
+    /**
+     * Import an obj model and its corresponding mtl texture file.
+     * @param name the name of the obj and mtl files to be loaded; should 100% match the files in the "models" folder except for the file extension.
+     * @param size
+     * @param xpos the x position to import the model at.
+     * @param ypos the y position to import the model at.
+     * @param zpos the z position to import the model at.
+     * @param rotation the y rotation to import the model at.
+     */
+    function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0) {
         const objLoader = new OBJLoader2();
         const mtlLoader = new MTLLoader();
         mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
@@ -72,7 +79,25 @@ window.onload = function () {
                 root.position.z = zpos;
                 root.rotation.y = rotation;
                 scene.add(root);
-                group = root;
+            });
+        });
+    }
+
+    /**
+     * Import an obj model and its corresponding mtl texture file, set the group parameter to this value.
+     * @param name name the name of the obj and mtl files to be loaded; should 100% match the files in the "models" folder except for the file extension.
+     * @param size the size multiplier to use for all axis.
+     * @param group the THREE.Group() group to add this model to.
+     */
+    function importModelDynamic(name, size = 1, group) {
+        const objLoader = new OBJLoader2();
+        const mtlLoader = new MTLLoader();
+        mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
+            let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
+            objLoader.addMaterials(materials);
+            objLoader.load('models/' + name + '.obj', (root) => {
+                root.scale.set(size, size, size);
+                group.add(root);
             });
         });
     }
@@ -108,7 +133,10 @@ window.onload = function () {
                 if (command.parameters.type == "robot") {
                     let model;
                     if (command.parameters.state == "carrying") {
-                        model = "YeeterCarrying"
+                        model = "YeeterCarrying";
+                    }
+                    else {
+                        model = "Yeeter";
                     }
                     // console.log("help im a robot");
                     // var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
@@ -122,13 +150,16 @@ window.onload = function () {
                     // ];
                     // var material = new THREE.MeshFaceMaterial(cubeMaterials);
                     // var robot = new THREE.Mesh(geometry, material);
-                    importModel(model)
-                    robot.position.y = 2.15;
 
-                    var group = new THREE.Group();
-                    group.add(robot);
-                    scene.add(group);
-                    worldObjects[command.parameters.uuid] = group;
+                    // var yeeterGroup = new THREE.Group();
+                    // importModelDynamic("Yeeter", 1, yeeterGroup);
+                    // scene.add(yeeterGroup);
+
+                    let robots = new THREE.Group();
+                    importModelDynamic(model, 1, robots);
+                    robots.position.y = 2;
+                    scene.add(robots);
+                    worldObjects[command.parameters.uuid] = robots;
                 }
                 if (command.parameters.type == "minecart") {
                     var geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
@@ -156,11 +187,8 @@ window.onload = function () {
              */
             var object = worldObjects[command.parameters.uuid];
             object.position.x = command.parameters.x;
-            object.position.y = command.parameters.y;
             object.position.z = command.parameters.z;
-            object.rotation.x = command.parameters.rotationX;
             object.rotation.y = command.parameters.rotationY;
-            object.rotation.z = command.parameters.rotationZ;
         }
     }
     init();

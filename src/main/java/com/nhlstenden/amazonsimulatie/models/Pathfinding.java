@@ -14,7 +14,7 @@ import java.util.*;
 public class Pathfinding implements Model {
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     private Graph graph = new Graph();
-    private String[] items = new String[] {"dirt", "glowstone", "tnt", "pig", "cobblestone", "log", "bricks", "skull", "iron", "diamond"};//, "stoneBricks", "gold", "emerald", "slime", "wool"};
+    private String[] items = new String[] {"dirt", "glowstone", "tnt", "slime", "cobblestone", "log", "bricks", "skull", "iron", "diamond"};//, "stoneBricks", "gold", "emerald", "slime", "wool"};
     private HashMap<String, Node> itemMap = new HashMap<>();
     private Node[][] nodes = new Node[5][7];
     private List<Node> locations = new ArrayList<Node>();

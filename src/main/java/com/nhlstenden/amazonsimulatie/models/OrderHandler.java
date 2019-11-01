@@ -24,7 +24,7 @@ public class OrderHandler implements Model {
         validOrders.add("dirt");
         validOrders.add("glowstone");
         validOrders.add("tnt");
-        validOrders.add("pig");
+        validOrders.add("slime");
         validOrders.add("cobblestone");
         validOrders.add("log");
         validOrders.add("bricks");
