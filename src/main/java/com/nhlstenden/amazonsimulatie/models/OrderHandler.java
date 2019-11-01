@@ -4,21 +4,29 @@ import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * This class handles all the orders from the minecarts to the robots
+ */
 public class OrderHandler implements Model {
     private World world;
     private List<Robot> robots;
     private List<Minecart> minecarts;
     private Pathfinding pathFinder = new Pathfinding();
-
-    private Queue<String> order = new LinkedList<>();
-    private Queue<String> request = new LinkedList<>();
+    /** queues to fill with orders and request to handle by the robots */
+    private Queue<String> order = new LinkedList<>(), request = new LinkedList<>();;
+    /** A list with possible items to order/request */
     private final List<String> validOrders = new ArrayList<>();
-
-    private Rack[] racks = new Rack[15];
+    /** Create 10 racks to keep track of inventory */
+    private Rack[] racks = new Rack[10];
+    /** Hashmap to map items to racks */
     private HashMap<String, Rack> rackMap = new HashMap<>();
-
+    /** Boolean to keep communicate with the robots when the minecart is on the loading dock */
     private boolean minecartOnDock = false;
 
+    /**
+     * When an orderHandler gets initiated fill the Racks with valid objects
+     * @param world
+     */
     public OrderHandler(Model world) {
         this.world = (World) world;
         validOrders.add("dirt");
@@ -31,21 +39,21 @@ public class OrderHandler implements Model {
         validOrders.add("skull");
         validOrders.add("iron");
         validOrders.add("diamond");
-//        validOrders.add("stoneBricks");
-//        validOrders.add("gold");
-//        validOrders.add("emerald");
-//        validOrders.add("slime");
-//        validOrders.add("wool");
         Collections.shuffle(validOrders);
         fillRacks(validOrders);
     }
 
+    /**
+     * Everytime the world gets updated the Orderhandler checks if the orders and requests are empty. then orderhandler tells the minecart to drive back and fill it again with new orders and requests.
+     * Orderhandler tells the robots the minecart is on the dock and ready to be loaded/unloaded.
+     * Orderhandler also calls the Pathfinding class to calculate the path for the robots
+     */
     @Override
     public void update() {
         robots = world.getRobotsAsList();
         minecarts = world.getMinecartAsList();
         for (Minecart m : minecarts) {
-            if (order.isEmpty() || order == null) {
+            if (order.isEmpty() && request.isEmpty() || order == null) {
                 if (m.getInZ() == m.getZ()) {
                     m.setLocation("Out");
                 }
@@ -99,6 +107,10 @@ public class OrderHandler implements Model {
         }
     }
 
+    /**
+     * Fills racks with random amount of a given item
+     * @param items
+     */
     private void fillRacks(List<String> items) {
         for (int i = 0; i < items.size(); i++) {
             String item = items.get(i);
@@ -109,6 +121,10 @@ public class OrderHandler implements Model {
         }
     }
 
+    /**
+     * generate 1-10 orders to fill requests and orders
+     * @return
+     */
     private Queue<String> generateNewOrder() {
         int size = (int) Math.ceil(Math.random() * 10);
         Queue<String> order = new LinkedList<>();

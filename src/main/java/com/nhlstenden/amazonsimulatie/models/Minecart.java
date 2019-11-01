@@ -1,81 +1,60 @@
 package com.nhlstenden.amazonsimulatie.models;
 
-import java.util.*;
 
-/*
+import java.util.UUID;
+
+/**
  * Deze class stelt een Minecart voor. Hij impelementeerd de class Object3D, omdat het ook een
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een Minecart geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
 class Minecart implements Object3D, Updatable {
     private UUID uuid;
-
-    private double x = 1.5, y = 2.15, z = -10, rotationX, rotationY = 0.5*Math.PI, rotationZ, inZ = 0, outZ = -10;
-
+    /**starting position, speed and rotation */
+    private double x = 1.5, y = 2.15, z = -10, rotationX, rotationY = 0.5*Math.PI, rotationZ, linearSpeed = 0.1;;
+    /** Locations for the minecart to be in place and out of screen */
+    private double inZ = 0, outZ = -10;
+    /**string for OrderHandler class to see where the minecart is at this time */
     private String location;
-    private double linearSpeed = 0.1;
-    private long targetTime;
-
-    public Stack<String> orders;
 
     public Minecart() {
         this.uuid = UUID.randomUUID();
-        orders = new Stack<String>();
-        location = "Out";
     }
 
-    /*
-     * Deze update methode wordt door de World aangeroepen wanneer de
-     * World zelf geupdate wordt. Dit betekent dat elk object, ook deze
-     * Minecart, in de 3D wereld steeds een beetje tijd krijgt om een update
-     * uit te voeren. In de updatemethode hieronder schrijf je dus de code
-     * die de Minecart steeds uitvoert (bijvoorbeeld positieveranderingen). Wanneer
-     * de methode true teruggeeft (zoals in het voorbeeld), betekent dit dat
-     * er inderdaad iets veranderd is en dat deze nieuwe informatie naar de views
-     * moet worden gestuurd. Wordt false teruggegeven, dan betekent dit dat er niks
-     * is veranderd, en de informatie hoeft dus niet naar de views te worden gestuurd.
-     * (Omdat de informatie niet veranderd is, is deze dus ook nog steeds hetzelfde als
-     * in de view)
+    /**
+     *This update method gets called by the World class when the World gets updated.
+     * If the location of the minecart is on "Out" and the end position has not been reached.
+     * Move to the end position.
+     * If the location of the minecart is on "In" and the end position has not been reached.
+     * Move to the end position.
      */
     @Override
     public boolean update() {
-        if(location == "Out" && z != -10){
-            moveTo(1.5,-10);
+        if(location == "Out" && z != outZ){
+            moveTo(outZ);
             return true;
         }
-        if(location == "In" && z != 0){
-            moveTo(1.5, 0);
+        if(location == "In" && z != inZ){
+            moveTo(inZ);
             return true;
         }
         return false;
     }
 
-    /*
-    *  When you give the minecart a target X and Z he will move to this target with given linearSpeed every update.
+    /**
+    * This class gets called by the update method. The update method gives a position to move to.
+     * The minecart will then move to this target with "linearSpeed" everytime it gets called by the update.
     */
-    public void moveTo(double targetX, double targetZ) {
-        if (targetX - x < 0) {
-            if (targetX < x) {
-                x -= linearSpeed;
-            }
-        } else
-            if (targetX > x) {
-                x += linearSpeed;
-            }
-
+    private void moveTo(double targetZ) {
         if (targetZ - z < 0) {
             if (targetZ < z) {
                 z -= linearSpeed;
             }
-        } else
+        } else {
             if (targetZ > z) {
                 z += linearSpeed;
             }
-
-        if (Math.abs(x - targetX) < 2 * linearSpeed) {
-            x = targetX;
         }
-
         if (Math.abs(z - targetZ) < 2 * linearSpeed) {
             z = targetZ;
         }
@@ -85,10 +64,6 @@ class Minecart implements Object3D, Updatable {
         this.location = location;
     }
 
-    public String getLocation() {
-        return location;
-    }
-
     @Override
     public String getUUID() {
         return this.uuid.toString();
@@ -96,12 +71,6 @@ class Minecart implements Object3D, Updatable {
 
     @Override
     public String getType() {
-        /*
-         * Dit onderdeel wordt gebruikt om het type van dit object als stringwaarde terug
-         * te kunnen geven. Het moet een stringwaarde zijn omdat deze informatie nodig
-         * is op de client, en die verstuurd moet kunnen worden naar de browser. In de
-         * javascript code wordt dit dan weer verder afgehandeld.
-         */
         return Minecart.class.getSimpleName().toLowerCase();
     }
 
@@ -120,10 +89,6 @@ class Minecart implements Object3D, Updatable {
         return this.z;
     }
 
-    public double getInZ() { return this.inZ;}
-
-    public double getOutZ() { return this.outZ;}
-
     @Override
     public double getRotationX() {
         return this.rotationX;
@@ -140,6 +105,20 @@ class Minecart implements Object3D, Updatable {
     }
 
     @Override
-    public String getCondition() { return null; }
+    public String getCondition() {
+        return null;
+    }
+
+    public double getInZ() {
+        return this.inZ;
+    }
+
+    public double getOutZ() {
+        return this.outZ;
+    }
+
+    public String getLocation() {
+        return location;
+    }
 
 }
