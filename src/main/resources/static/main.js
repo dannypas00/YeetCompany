@@ -176,7 +176,7 @@ window.onload = function () {
                     ];
                     var material = new THREE.MeshFaceMaterial(cubeMaterials);
                     var minecart = new THREE.Mesh(geometry, material);
-                    minecart.position.y = 0.15;
+                    minecart.position.y = 2.15;
 
                     var group = new THREE.Group();
                     group.add(minecart);
