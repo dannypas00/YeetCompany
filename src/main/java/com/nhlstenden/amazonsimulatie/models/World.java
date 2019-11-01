@@ -12,13 +12,7 @@ import java.util.List;
  * in het model. Dit betekent dus de logica die het magazijn simuleert.
  */
 public class World implements Model {
-    /*
-     * De wereld bestaat uit objecten, vandaar de naam worldObjects. Dit is een lijst
-     * van alle objecten in de 3D wereld. Deze objecten zijn in deze voorbeeldcode alleen
-     * nog robots. Er zijn ook nog meer andere objecten die ook in de wereld voor kunnen komen.
-     * Deze objecten moeten uiteindelijk ook in de lijst passen (overerving). Daarom is dit
-     * een lijst van Object3D onderdelen. Deze kunnen in principe alles zijn. (Robots, vrachrtwagens, etc)
-     */
+
     private List<Object3D> worldObjects;
     private List<Robot> robots = new ArrayList<>();
     private List<Minecart> minecarts = new ArrayList<>();
@@ -28,13 +22,12 @@ public class World implements Model {
      * Het systeem werkt al as-is, dus dit hoeft niet aangepast te worden.
      */
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-    /*
-     * De wereld maakt een lege lijst voor worldObjects aan. Daarin wordt nu één robot gestopt.
-     * Deze methode moet uitgebreid worden zodat alle objecten van de 3D wereld hier worden gemaakt.
+    /**
+     * De wereld maakt een lege lijst voor worldObjects aan. Daarin worden meerdere robots en een minecart gestopt.
      */
     public World() {
         this.worldObjects = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
+        for (int i = 0; i < 3; i++) {
             Robot robot = new Robot();
             this.worldObjects.add(robot);
             this.robots.add(robot);
