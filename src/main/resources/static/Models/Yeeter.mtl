@@ -1,28 +1,24 @@
 # Blender MTL File: 'None'
 # Material Count: 2
 
-newmtl Grindstone
-Ns 1
+newmtl Grindstone.002
+Ns 1.000002
 Ka 1.000000 1.000000 1.000000
 Kd 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
 Ke 0.0 0.0 0.0
 Ni 1.450000
-d 1
+d 1.000000
 illum 1
-interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
-
 map_Kd Yeeter-RGB.png
 
-newmtl Mob_Head
-Ns 1
+newmtl Mob_Head.002
+Ns 1.000002
 Ka 1.000000 1.000000 1.000000
 Kd 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
 Ke 0.0 0.0 0.0
 Ni 1.450000
-d 1
+d 1.000000
 illum 1
-interpolateMode NEAREST_MAGNIFICATION_TRILINEAR_MIPMAP_MINIFICATION
-
 map_Kd Yeeter-RGB.png
