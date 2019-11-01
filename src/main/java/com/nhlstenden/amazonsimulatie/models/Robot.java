@@ -11,11 +11,16 @@ import java.util.UUID;
 class Robot implements Object3D, Updatable {
     private UUID uuid;
 
+    /** String to save the robots state */
     private String state = "await";
     private double x, y, z, rotationX, rotationY, rotationZ, linearSpeed = 0.125, rotationSpeed = Math.PI/20, rad, deltaX, deltaZ;
+    /** long to help to time the waiting function from the robot */
     private long targetTime;
+    /** Node to save the target node for an order in */
     private Node target;
+    /** stack to pop the route from for the way towards and the way back */
     private Stack<Node> route, breadcrumbs = new Stack<Node>();
+    /** boolean to check if the robot is carrying an object */
     private boolean carrying = false;
 
     public Robot () {
@@ -45,7 +50,7 @@ class Robot implements Object3D, Updatable {
         } else return false;
     }
 
-    /*
+    /**
      * Makes the robot move to the nodes in the stack "route" and fill a stack with breadcrumbs to find his way back.
      * He gets this stack from the Orderhandler class
     */
@@ -59,7 +64,10 @@ class Robot implements Object3D, Updatable {
         } else return false;
     }
 
-    /*Function to rotate the robot towards the target*/
+    /**
+     * Function to rotate the robot towards the target x and z
+     * @param targetNode
+     */
     private void rotateTo(Node targetNode) {
         deltaX = x - targetNode.getX();
         deltaZ = z - targetNode.getZ();
@@ -69,7 +77,12 @@ class Robot implements Object3D, Updatable {
         rotationY = rad + 0.5*Math.PI;
     }
 
-    /*Function to move towards the target*/
+    /**
+     * Function to move the robot towards its targetNode
+     * If the robot is on its target he waits for 1000ms and then returns back to the loading dock
+     * This function also sets the different states the robot can be in.
+     * @param targetNode
+     */
     public void moveTo(Node targetNode) {
         if (targetNode.getX() - x < 0) {
             if (targetNode.getX() < x) {
