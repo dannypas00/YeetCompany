@@ -59,21 +59,22 @@ window.onload = function () {
     * Make sure the obj and mtl have the same name and are located in the "src/main/resource/static/models" folder.
     * Parameters: name, size, x, y, z, rotation
     */
-    function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0) {
+    function importModel(name, size = 1, xpos = 0, ypos = 0, zpos = 0, rotation = 0, group) {
         const objLoader = new OBJLoader2();
         const mtlLoader = new MTLLoader();
         mtlLoader.load('models/' + name + '.mtl', (mtlParseResult) => {
             let materials = MtlObjBridge.addMaterialsFromMtlLoader(mtlParseResult);
-        objLoader.addMaterials(materials);
-        objLoader.load('models/' + name + '.obj', (root) => {
-            root.scale.set(size, size, size);
-        root.position.x = xpos;
-        root.position.y = ypos;
-        root.position.z = zpos;
-        root.rotation.y = rotation;
-        scene.add(root);
-    });
-    });
+            objLoader.addMaterials(materials);
+            objLoader.load('models/' + name + '.obj', (root) => {
+                root.scale.set(size, size, size);
+                root.position.x = xpos;
+                root.position.y = ypos;
+                root.position.z = zpos;
+                root.rotation.y = rotation;
+                scene.add(root);
+                group = root;
+            });
+        });
     }
 
     function onWindowResize() {
@@ -105,18 +106,23 @@ window.onload = function () {
                 //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
                 console.log("command = " + command.parameters.type);
                 if (command.parameters.type == "robot") {
-                    console.log("help im a robot");
-                    var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                    var cubeMaterials = [
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                    ];
-                    var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                    var robot = new THREE.Mesh(geometry, material);
+                    let model;
+                    if (command.parameters.state == "carrying") {
+                        model = "YeeterCarrying"
+                    }
+                    // console.log("help im a robot");
+                    // var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
+                    // var cubeMaterials = [
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
+                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
+                    // ];
+                    // var material = new THREE.MeshFaceMaterial(cubeMaterials);
+                    // var robot = new THREE.Mesh(geometry, material);
+                    importModel(model)
                     robot.position.y = 2.15;
 
                     var group = new THREE.Group();
