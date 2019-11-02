@@ -31,7 +31,7 @@ window.onload = function () {
         window.addEventListener('resize', onWindowResize, false);
 
         importModel("NewWarehouse", 500, -16, -3, 8, Math.PI);
-        // var yeeterGroup = new THREE.Group();
+        // let yeeterGroup = new THREE.Group();
         // importModelDynamic("Yeeter", 1, yeeterGroup);
         // scene.add(yeeterGroup);
 
@@ -125,7 +125,7 @@ window.onload = function () {
     socket = new WebSocket("ws://" + window.location.hostname + ":" + window.location.port + "/connectToSimulation");
     socket.onmessage = function (event) {
         //Hier wordt het commando dat vanuit de server wordt gegeven uit elkaar gehaald
-        var command = parseCommand(event.data);
+        let command = parseCommand(event.data);
         //Wanneer het commando is "object_update", dan wordt deze code uitgevoerd. Bekijk ook de servercode om dit goed te begrijpen.
         if (command.command == "object_update") {
             //Wanneer het object dat moet worden geupdate nog niet bestaat (komt niet voor in de lijst met worldObjects op de client),
@@ -134,39 +134,18 @@ window.onload = function () {
                 //Wanneer het object een robot is, wordt de code hieronder uitgevoerd.
                 console.log("command = " + command.parameters.type);
                 if (command.parameters.type == "robot") {
-                    let model;
-                    if (command.parameters.state == "carrying") {
-                        model = "YeeterCarrying";
-                    }
-                    else {
-                        model = "Yeeter";
-                    }
-                    // console.log("help im a robot");
-                    // var geometry = new THREE.BoxGeometry(0.9, 0.3, 0.9);
-                    // var cubeMaterials = [
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //LEFT
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_side.png"), side: THREE.DoubleSide }), //RIGHT
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_top.png"), side: THREE.DoubleSide }), //TOP
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_bottom.png"), side: THREE.DoubleSide }), //BOTTOM
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //FRONT
-                    //     new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/robot_front.png"), side: THREE.DoubleSide }), //BACK
-                    // ];
-                    // var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                    // var robot = new THREE.Mesh(geometry, material);
-
-                    // var yeeterGroup = new THREE.Group();
-                    // importModelDynamic("Yeeter", 1, yeeterGroup);
-                    // scene.add(yeeterGroup);
-
-                    let robots = new THREE.Group();
+                    const model = "Yeeter";
+                    const robots = new THREE.Group();
                     importModelDynamic(model, 1, robots);
+                    
                     robots.position.y = 2;
                     scene.add(robots);
+                    
                     worldObjects[command.parameters.uuid] = robots;
                 }
                 if (command.parameters.type == "minecart") {
-                    var geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
-                    var cubeMaterials = [
+                    const geometry = new THREE.BoxGeometry(1.2, 0.7, 1.1);
+                    const cubeMaterials = [
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //LEFT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //RIGHT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecarttop.png"), side: THREE.DoubleSide }), //TOP
@@ -174,11 +153,11 @@ window.onload = function () {
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //FRONT
                         new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("textures/minecartside.png"), side: THREE.DoubleSide }), //BACK
                     ];
-                    var material = new THREE.MeshFaceMaterial(cubeMaterials);
-                    var minecart = new THREE.Mesh(geometry, material);
+                    const material = new THREE.MeshFaceMaterial(cubeMaterials);
+                    const minecart = new THREE.Mesh(geometry, material);
                     minecart.position.y = 2.15;
 
-                    var group = new THREE.Group();
+                    const group = new THREE.Group();
                     group.add(minecart);
 
                     scene.add(group);
@@ -188,7 +167,7 @@ window.onload = function () {
             /*
              * Deze code wordt elke update uitgevoerd. Het update alle positiegegevens van het 3D object.
              */
-            var object = worldObjects[command.parameters.uuid];
+            const object = worldObjects[command.parameters.uuid];
             object.position.x = command.parameters.x;
             object.position.z = command.parameters.z;
             object.rotation.y = command.parameters.rotationY;

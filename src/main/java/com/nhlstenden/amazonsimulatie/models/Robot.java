@@ -70,9 +70,10 @@ class Robot implements Object3D, Updatable {
         }
         deltaX = x - targetNode.getX();
         deltaZ = z - targetNode.getZ();
-        rad = Math.atan2(deltaZ, deltaX);
-        if(rad < 0)
-            rad += 2*Math.PI;
+        rad = Math.atan2(deltaZ, deltaX);   // BUG: Robots rotate sideways when moving from 0, 1 to 0, 0.
+        if(rad < 0) {                       // BUG: Robots rotate away from rack when at the intended rack.
+            rad += 2 * Math.PI;
+        }
         rotationY = (rad - 0.5*Math.PI) * targetSign;
     }
 
