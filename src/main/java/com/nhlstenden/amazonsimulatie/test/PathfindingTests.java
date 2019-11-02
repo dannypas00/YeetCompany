@@ -10,6 +10,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class PathfindingTests {
+    /**
+     * Tests if the pathfinding algorithm is working properly.
+     * @throws Exception
+     */
     @Test
     public void PathfindingTests() throws Exception {
         Pathfinding pathfinder = new Pathfinding();

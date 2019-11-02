@@ -20,24 +20,32 @@ public class Node {
         this.name = name;
     }
 
+    /**
+     * Adds a two-way traversible path between this node and the given node.
+     * @param destination The node with which to make a connection.
+     * @param distance The distance between this node and the target node.
+     */
     public void addDestination(Node destination, int distance) {
         adjacentNodes.put(destination, distance);
         destination.adjacentNodes.put(this, distance);
     }
 
+    /**
+     * Adds this node to the returned path for pathfinding purposes.
+     * @return A linkedlist of nodes in a path.
+     */
+    public LinkedList<Node> getRealShortestPath() {
+        LinkedList<Node> realShortestPath = new LinkedList<>();
+        realShortestPath.add(this);
+        realShortestPath.addAll(shortestPath);
+        return realShortestPath;
+    }
 
     public Integer getDistance() {
         return distance;
     }
     public LinkedList<Node> getShortestPath() {
         return shortestPath;
-    }
-
-    public LinkedList<Node> getRealShortestPath() {
-        LinkedList<Node> realShortestPath = new LinkedList<>();
-        realShortestPath.add(this);
-        realShortestPath.addAll(shortestPath);
-        return realShortestPath;
     }
 
     public Map<Node, Integer> getAdjacentNodes() {

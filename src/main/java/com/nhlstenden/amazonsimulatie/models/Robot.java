@@ -8,7 +8,7 @@ import java.util.UUID;
  * 3D object is. Ook implementeerd deze class de interface Updatable. Dit is omdat
  * een robot geupdate kan worden binnen de 3D wereld om zich zo voort te bewegen.
  */
-class Robot implements Object3D, Updatable {
+public class Robot implements Object3D, Updatable {
     private UUID uuid;
 
     /** String to save the robots state */
