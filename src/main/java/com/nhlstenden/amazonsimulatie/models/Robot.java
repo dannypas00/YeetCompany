@@ -47,7 +47,9 @@ public class Robot implements Object3D, Updatable {
             moveTo(target);
             rotateTo(target);
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -61,7 +63,9 @@ public class Robot implements Object3D, Updatable {
             breadcrumbs.push(target);
             carrying = carrying && (order == "put" && state == "moving" || order == "pull" && state == "returning");
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     /**

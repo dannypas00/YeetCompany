@@ -50,10 +50,13 @@ public class World implements Model {
      */
     @Override
     public void update() {
-        for (Object3D object : this.worldObjects)
-            if(object instanceof Updatable)
-                if (((Updatable)object).update())
+        for (Object3D object : this.worldObjects) {
+            if (object instanceof Updatable) {
+                if (((Updatable) object).update()) {
                     pcs.firePropertyChange(Model.UPDATE_COMMAND, null, new ProxyObject3D(object));
+                }
+            }
+        }
     }
 
     /*
@@ -79,7 +82,11 @@ public class World implements Model {
         return returnList;
     }
 
-    public List<Robot> getRobotsAsList() { return robots; }
+    public List<Robot> getRobotsAsList() {
+        return robots;
+    }
 
-    public List<Minecart> getMinecartAsList() { return minecarts; }
+    public List<Minecart> getMinecartAsList() {
+        return minecarts;
+    }
 }
