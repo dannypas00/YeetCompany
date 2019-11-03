@@ -69,12 +69,20 @@ public class Robot implements Object3D, Updatable {
      * @param targetNode
      */
     private void rotateTo(Node targetNode) {
+        int targetSign = 1;
+        if (targetNode.getX() != x) {
+            targetSign = (int) Math.signum(targetNode.getX());
+        }
+        if (targetNode.getZ() != z) {
+            targetSign = (int) Math.signum(targetNode.getZ());
+        }
         deltaX = x - targetNode.getX();
         deltaZ = z - targetNode.getZ();
-        rad = Math.atan2(deltaZ, deltaX);
-        if(rad < 0)
-            rad += 2*Math.PI;
-        rotationY = rad + 0.5*Math.PI;
+        rad = Math.atan2(deltaZ, deltaX);   // BUG: Robots rotate sideways when moving from 0, 1 to 0, 0.
+        if(rad < 0) {                       // BUG: Robots rotate away from rack when at the intended rack.
+            rad += 2 * Math.PI;
+        }
+        rotationY = (rad - 0.5*Math.PI) * targetSign;
     }
 
     /**
@@ -118,6 +126,7 @@ public class Robot implements Object3D, Updatable {
                 setState("moving");
             } else {
                 if (state != "returning") {
+                    rotateTo(targetNode);
                     targetTime = System.currentTimeMillis() + 1000;
                 }
                 if (!breadcrumbs.isEmpty() && target.getName() != "0, 0") {
